@@ -1,5 +1,5 @@
 [sqlfluff]
-dialect = snowflake
+dialect = bigquery
 templater = dbt
 runaway_limit = 10
 max_line_length = 120
@@ -10,7 +10,7 @@ encoding = utf-8
 [sqlfluff:templater:dbt]
 project_dir = .
 profiles_dir = .
-profile = apex
+profile = multi
 target = staging
 
 

@@ -1,0 +1,8 @@
+{
+    "tool_name": "My Awesome Domain",
+    "full_model_name":"",
+    "author_name": "Chaim Turkel",
+    "create_asset": true,
+    "create_policy": true,
+    "version": "0.1.0"
+  }

@@ -55,11 +55,11 @@ jobs:
           echo "SNOWFLAKE_PRIVATE_KEY_PATH=/tmp/rsa_key.p8" >> $GITHUB_ENV
 
 
-      - uses: robinraju/release-downloader@v1
-        with:
-          latest: true
-          out-file-path: target/last_run
-          fileName: '*.json'
+      # - uses: robinraju/release-downloader@v1
+      #   with:
+      #     latest: true
+      #     out-file-path: target/last_run
+      #     fileName: '*.json'
 
 
       - name: Run File Validation
@@ -95,11 +95,12 @@ jobs:
           dbt run-operation create_database --args "{database_name: ${SNOWFLAKE_DATABASE}}"
           dbt run-operation create_database --args "{database_name: ${SNOWFLAKE_DATABASE}_GOLD}"
           dbt run-operation create_database --args "{database_name: ${SNOWFLAKE_DATABASE}_SILVER}"
-          if ${{ github.ref == 'refs/heads/main' }}; then
-            dbt build --exclude dbt_snowflake_monitoring --exclude elementary
-          else
-            dbt build --exclude dbt_snowflake_monitoring --exclude elementary --select "+state:modified+" --state ./target/last_run
-          fi
+          dbt build --exclude dbt_snowflake_monitoring --exclude elementary
+          # if ${{ github.ref == 'refs/heads/main' }}; then
+          #   dbt build --exclude dbt_snowflake_monitoring --exclude elementary
+          # else
+          #   dbt build --exclude dbt_snowflake_monitoring --exclude elementary --select "+state:modified+" --state ./target/last_run
+          # fi
                     
       - name: Prepare Docs Site Artifact
         if: (github.event_name == 'push')

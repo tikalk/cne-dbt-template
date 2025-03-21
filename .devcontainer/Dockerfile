@@ -14,9 +14,7 @@ RUN curl -LsSf https://astral.sh/uv/install.sh | sh
 RUN pip install --no-cache-dir \
   dbt-core \
   dbt-postgres \
-  dbt-bigquery \
-  dbt-snowflake
-
+  dbt-bigquery 
 # Create non-root user
 RUN useradd -ms /bin/bash vscode
 USER vscode

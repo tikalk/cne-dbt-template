@@ -10,9 +10,8 @@ _Instructions on how to run this locally, background context, what to review, qu
 
 ### Additional information
 
-- Linear ticket: https://linear.app/venasecurity/issue/VEN-
-- Link to documentation: https://www.notion.so/vena-security/
-- Slack thread: https://vena-network.slack.com/archives/C0000000000/p1231231231231231
+- GitLab ticket: https://gitlab.tikalk.dev/
+- Link to documentation: https://www.notion.so/
 
 ### Screenshots
 

@@ -1,4 +1,4 @@
-# Apex DBT Project
+# DBT Project
 
 This DBT project is designed to be used in conjunction with Dagster as an orchestrator. Conceptually, DBT models map to Dagster Assets.
 
@@ -44,7 +44,7 @@ Now run:
 
 `tasks dbt:debug`
 
-This will validate the dbt connection to snowflake.
+This will validate the dbt connection to wharehouse.
 
 
 ## Basic Usage
@@ -89,7 +89,7 @@ The project structure follows dbt recommendations.
 Often any issues presented will be visible via the UI in Dagster in logs. However, if you require a bit more in-depth debugging, you can perform the following steps:
 
 - Run `dbt build --debug` to output more verbose logs from this folder
-- Check out the compiled models in the `target/compiled/dbt_project_models` folder and try to run the compiled steps in Snowflake.
+- Check out the compiled models in the `target/compiled/dbt_project_models` folder and try to run the compiled steps in warehouse.
 
 
 ## Components
@@ -126,8 +126,8 @@ DBT models are SQL files that define transformations on your data. These models 
 Macros are reusable SQL snippets that can be used across multiple models. They help to avoid repetition and make your SQL code more maintainable.
 
 #### Infra macros   
-    * create_database - create your snowkflake db if not exists
-    * delete_database - delete your snowflake db if exists (allows you to reset your db)
+    * create_database - create your warehouse db if not exists
+    * delete_database - delete your warehouse db if exists (allows you to reset your db)
     * [generate_schema_name](https://docs.getdbt.com/docs/build/custom-schemas) - allow you do definee location of tables in schema by code
     * [get_custom_alias](https://docs.getdbt.com/docs/build/custom-aliases) - allow you do define name of table in schema by code
 

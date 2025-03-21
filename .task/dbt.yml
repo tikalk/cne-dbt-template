@@ -2,11 +2,11 @@ version: '3'
 
 
 env:
-  DBT_PROFILE: "apex"
+  DBT_PROFILE: "multi"
   DBT_TARGET: "staging"
   DBT_PROJECT_DIR: "."
-  DBT_STAGING_EXTENSION: "_SILVER"
-  DBT_MARTS_EXTENSION: "_GOLD"
+  DBT_STAGING_EXTENSION: "_STAGING"
+  DBT_MARTS_EXTENSION: "_MARTS"
 vars:
   SLIM_PARAMS: '{{ if .USE_SLIM_PARAMS }}--select "+state:modified" --state ./target/last_run{{ else }}{{ end }}'
 

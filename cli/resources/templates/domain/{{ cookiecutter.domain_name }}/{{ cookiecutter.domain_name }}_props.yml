@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+  - name: {{ cookiecutter.domain_name }}_data
+    description: >
+          Collection data saved in json format
+    database: {% raw %}"{{ env_var('SOURCE_DATABASE', env_var('SNOWFLAKE_DATABASE')) }}"{% endraw %}
+    schema: BRONZE  
+    tables:
+      - name: [table_name]
+
+groups:
+  - name: {{ cookiecutter.domain_name }}
+    owner:
+      email: {{ cookiecutter.domain_name }}@nagomisecurity.com
+      slack: ask-engine
+      github: tikal-dbt
