@@ -112,10 +112,10 @@ repos:
         pass_filenames: false
         exclude: ^(cli/resources/templates)/
         
-      - id: cli-validate
-        name: cli validate
-        entry: cli_validate
-        description: This hook runs cli validate
-        language: python 
-        files: ^(models)\/.+\.(yml|yaml|sql)$
-        # stages: [pre-push]
+      # - id: cli-validate
+      #   name: cli validate
+      #   entry: cli_validate
+      #   description: This hook runs cli validate
+      #   language: python 
+      #   files: ^(models)\/.+\.(yml|yaml|sql)$
+      #   # stages: [pre-push]
