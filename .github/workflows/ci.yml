@@ -75,6 +75,8 @@ jobs:
           DBT_PROFILE_TOKEN_URI: ${{ vars.DBT_PROFILE_TOKEN_URI }}
           DBT_PROFILE_AUTH_PROVIDER_CERT_URL: ${{ vars.DBT_PROFILE_AUTH_PROVIDER_CERT_URL }}
           DBT_PROFILE_CLIENT_CERT_URL: ${{ vars.DBT_PROFILE_CLIENT_CERT_URL }}
+
+          
           DATASET_PREFIX: "CI_"
         run: |
           source .venv/bin/activate        
