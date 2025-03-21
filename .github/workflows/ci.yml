@@ -74,9 +74,7 @@ jobs:
           DBT_PROFILE_AUTH_URI: ${{ vars.DBT_PROFILE_AUTH_URI }}
           DBT_PROFILE_TOKEN_URI: ${{ vars.DBT_PROFILE_TOKEN_URI }}
           DBT_PROFILE_AUTH_PROVIDER_CERT_URL: ${{ vars.DBT_PROFILE_AUTH_PROVIDER_CERT_URL }}
-          DBT_PROFILE_CLIENT_CERT_URL: ${{ vars.DBT_PROFILE_CLIENT_CERT_URL }}
-
-          
+          DBT_PROFILE_CLIENT_CERT_URL: ${{ vars.DBT_PROFILE_CLIENT_CERT_URL }}          
           DATASET_PREFIX: "CI_"
         run: |
           source .venv/bin/activate        
@@ -89,13 +87,18 @@ jobs:
       - name: Run DBT
         if: (github.event_name == 'push') || (github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize'))
         env:
-          SNOWFLAKE_ACCOUNT: ${{ vars.SNOWFLAKE_ACCOUNT }}
-          SNOWFLAKE_DATABASE: SAAS_${{ env.DB_NAME }}
-          SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}          
-          SNOWFLAKE_USERNAME: ${{ vars.SNOWFLAKE_USERNAME }}
-          SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
-          SNOWFLAKE_SCHEMA: "${{ vars.SNOWFLAKE_SCHEMA }}" 
-          SOURCE_DATABASE: "SAAS_STAGING"
+          DBT_PROFILE_TYPE: ${{ vars.DBT_PROFILE_TYPE }}          
+          DBT_PROFILE_PROJECT: ${{ vars.DBT_PROFILE_PROJECT }}
+          DBT_PROFILE_PROJECT_ID: ${{ vars.DBT_PROFILE_PROJECT_ID }}
+          DBT_PROFILE_PRIVATE_KEY_ID: ${{ vars.DBT_PROFILE_PRIVATE_KEY_ID }}
+          DBT_PROFILE_PRIVATE_KEY: ${{ vars.DBT_PROFILE_PRIVATE_KEY }}
+          DBT_PROFILE_CLIENT_EMAIL: ${{ vars.DBT_PROFILE_PRIVATE_KEY }}
+          DBT_PROFILE_CLIENT_ID: ${{ vars.DBT_PROFILE_CLIENT_ID }}
+          DBT_PROFILE_AUTH_URI: ${{ vars.DBT_PROFILE_AUTH_URI }}
+          DBT_PROFILE_TOKEN_URI: ${{ vars.DBT_PROFILE_TOKEN_URI }}
+          DBT_PROFILE_AUTH_PROVIDER_CERT_URL: ${{ vars.DBT_PROFILE_AUTH_PROVIDER_CERT_URL }}
+          DBT_PROFILE_CLIENT_CERT_URL: ${{ vars.DBT_PROFILE_CLIENT_CERT_URL }}          
+          DATASET_PREFIX: "CI_"
         run: |
           source .venv/bin/activate      
           dbt deps          
@@ -114,11 +117,18 @@ jobs:
         if: (github.event_name == 'push')
         env:
           SNOWFLAKE_ACCOUNT: ${{ vars.SNOWFLAKE_ACCOUNT }}
-          SNOWFLAKE_DATABASE: SAAS_${{ env.DB_NAME }}
-          SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}          
-          SNOWFLAKE_USERNAME: ${{ vars.SNOWFLAKE_USERNAME }}
-          SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
-          SNOWFLAKE_SCHEMA: "${{ vars.SNOWFLAKE_SCHEMA }}" 
+          DBT_PROFILE_TYPE: ${{ vars.DBT_PROFILE_TYPE }}          
+          DBT_PROFILE_PROJECT: ${{ vars.DBT_PROFILE_PROJECT }}
+          DBT_PROFILE_PROJECT_ID: ${{ vars.DBT_PROFILE_PROJECT_ID }}
+          DBT_PROFILE_PRIVATE_KEY_ID: ${{ vars.DBT_PROFILE_PRIVATE_KEY_ID }}
+          DBT_PROFILE_PRIVATE_KEY: ${{ vars.DBT_PROFILE_PRIVATE_KEY }}
+          DBT_PROFILE_CLIENT_EMAIL: ${{ vars.DBT_PROFILE_PRIVATE_KEY }}
+          DBT_PROFILE_CLIENT_ID: ${{ vars.DBT_PROFILE_CLIENT_ID }}
+          DBT_PROFILE_AUTH_URI: ${{ vars.DBT_PROFILE_AUTH_URI }}
+          DBT_PROFILE_TOKEN_URI: ${{ vars.DBT_PROFILE_TOKEN_URI }}
+          DBT_PROFILE_AUTH_PROVIDER_CERT_URL: ${{ vars.DBT_PROFILE_AUTH_PROVIDER_CERT_URL }}
+          DBT_PROFILE_CLIENT_CERT_URL: ${{ vars.DBT_PROFILE_CLIENT_CERT_URL }}          
+          DATASET_PREFIX: "CI_"
         run: |
           source .venv/bin/activate          
           dbt docs generate --static
@@ -172,12 +182,18 @@ jobs:
       - name: Cleanup (e.g., delete resources tied to the branch)
         if:  (github.event.action == 'closed' || github.ref == 'refs/heads/main')
         env:
-          SNOWFLAKE_ACCOUNT: ${{ vars.SNOWFLAKE_ACCOUNT }}
-          SNOWFLAKE_DATABASE: SAAS_${{ env.DB_NAME }}
-          SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}          
-          SNOWFLAKE_USERNAME: ${{ vars.SNOWFLAKE_USERNAME }}
-          SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
-          SNOWFLAKE_SCHEMA: "${{ vars.SNOWFLAKE_SCHEMA }}" 
+          DBT_PROFILE_TYPE: ${{ vars.DBT_PROFILE_TYPE }}          
+          DBT_PROFILE_PROJECT: ${{ vars.DBT_PROFILE_PROJECT }}
+          DBT_PROFILE_PROJECT_ID: ${{ vars.DBT_PROFILE_PROJECT_ID }}
+          DBT_PROFILE_PRIVATE_KEY_ID: ${{ vars.DBT_PROFILE_PRIVATE_KEY_ID }}
+          DBT_PROFILE_PRIVATE_KEY: ${{ vars.DBT_PROFILE_PRIVATE_KEY }}
+          DBT_PROFILE_CLIENT_EMAIL: ${{ vars.DBT_PROFILE_PRIVATE_KEY }}
+          DBT_PROFILE_CLIENT_ID: ${{ vars.DBT_PROFILE_CLIENT_ID }}
+          DBT_PROFILE_AUTH_URI: ${{ vars.DBT_PROFILE_AUTH_URI }}
+          DBT_PROFILE_TOKEN_URI: ${{ vars.DBT_PROFILE_TOKEN_URI }}
+          DBT_PROFILE_AUTH_PROVIDER_CERT_URL: ${{ vars.DBT_PROFILE_AUTH_PROVIDER_CERT_URL }}
+          DBT_PROFILE_CLIENT_CERT_URL: ${{ vars.DBT_PROFILE_CLIENT_CERT_URL }}          
+          DATASET_PREFIX: "CI_"
         run: |
             source .venv/bin/activate          
             dbt deps
