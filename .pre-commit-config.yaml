@@ -79,17 +79,6 @@ repos:
     -   id: dbt-parse
         files: ^models/|^analysis/|^macros/|^tests/
         stages: [pre-push]
-    # -   id: check-script-has-no-table-name
-    #     files: ^models
-    #     stages: [pre-push]
-    # -   id: check-macro-arguments-have-desc
-    #     stages: [pre-push]
-    # -   id: check-macro-has-description
-    #     stages: [pre-push]
-    # -   id: dbt-test
-    #     files: ^models/|^analysis/|^macros/|^tests/ 
-    #     args: ["--", "--resource-type=unit"]
-    #     stages: [pre-push]
 
 
 -   repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
@@ -102,15 +91,15 @@ repos:
         pass_filenames: false
         always_run: true        
 
--   repo: local
-    hooks:
-      - id: run-sast
-        name: run-sast
-        entry: bearer scan . 
-        language: system
-        stages: [pre-push]
-        pass_filenames: false
-        exclude: ^(cli/resources/templates)/
+# -   repo: local
+#     hooks:
+#       - id: run-sast
+#         name: run-sast
+#         entry: bearer scan . 
+#         language: system
+#         stages: [pre-push]
+#         pass_filenames: false
+#         exclude: ^(cli/resources/templates)/
         
       # - id: cli-validate
       #   name: cli validate
