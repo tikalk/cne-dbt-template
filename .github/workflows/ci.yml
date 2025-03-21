@@ -72,7 +72,8 @@ jobs:
           SNOWFLAKE_SCHEMA: "${{ vars.SNOWFLAKE_SCHEMA }}" 
           SOURCE_DATABASE: "SAAS_STAGING"
         run: |
-          source .venv/bin/activate          
+          source .venv/bin/activate        
+          env  
           dbt deps
           dbt parse
           pre-commit run --all-files
