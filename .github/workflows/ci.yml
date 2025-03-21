@@ -76,6 +76,7 @@ jobs:
           DBT_PROFILE_AUTH_PROVIDER_CERT_URL: ${{ vars.DBT_PROFILE_AUTH_PROVIDER_CERT_URL }}
           DBT_PROFILE_CLIENT_CERT_URL: ${{ vars.DBT_PROFILE_CLIENT_CERT_URL }}          
           DATASET_PREFIX: "CI_"
+          DBT_PROFILE_LOCATION: "europe-central2"
         run: |
           source .venv/bin/activate        
           env  
@@ -99,6 +100,7 @@ jobs:
           DBT_PROFILE_AUTH_PROVIDER_CERT_URL: ${{ vars.DBT_PROFILE_AUTH_PROVIDER_CERT_URL }}
           DBT_PROFILE_CLIENT_CERT_URL: ${{ vars.DBT_PROFILE_CLIENT_CERT_URL }}          
           DATASET_PREFIX: "CI_"
+          DBT_PROFILE_LOCATION: "europe-central2"
         run: |
           source .venv/bin/activate      
           dbt deps          
@@ -129,6 +131,7 @@ jobs:
           DBT_PROFILE_AUTH_PROVIDER_CERT_URL: ${{ vars.DBT_PROFILE_AUTH_PROVIDER_CERT_URL }}
           DBT_PROFILE_CLIENT_CERT_URL: ${{ vars.DBT_PROFILE_CLIENT_CERT_URL }}          
           DATASET_PREFIX: "CI_"
+          DBT_PROFILE_LOCATION: "europe-central2"
         run: |
           source .venv/bin/activate          
           dbt docs generate --static
@@ -194,6 +197,7 @@ jobs:
           DBT_PROFILE_AUTH_PROVIDER_CERT_URL: ${{ vars.DBT_PROFILE_AUTH_PROVIDER_CERT_URL }}
           DBT_PROFILE_CLIENT_CERT_URL: ${{ vars.DBT_PROFILE_CLIENT_CERT_URL }}          
           DATASET_PREFIX: "CI_"
+          DBT_PROFILE_LOCATION: "europe-central2"
         run: |
             source .venv/bin/activate          
             dbt deps
