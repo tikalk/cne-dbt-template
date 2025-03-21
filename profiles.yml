@@ -8,11 +8,6 @@ tikal_dbt:
       priority: interactive
       project: "{{ env_var('DBT_PROFILE_PROJECT') }}"
       location: "{{ env_var('DBT_PROFILE_LOCATION', 'eu') }}"
-      dwh_enforce_taxonomy_project_id: "{{ env_var('DWH_ENFORCE_TAXONOMY_PROJECT_ID') }}"
-      dwh_enforce_taxonomy_location: "{{ env_var('DWH_ENFORCE_TAXONOMY_LOCATION') }}"
-      dwh_enforce_taxonomy_id: "{{ env_var('DWH_ENFORCE_TAXONOMY_ID')}}"
-      string_mask_id: "{{ env_var('STRING_MASK_ID') }}"
-      non_string_mask_id: "{{ env_var('NON_STRING_MASK_ID') }}"
       threads: 4
       type: bigquery
       method: service-account-json
