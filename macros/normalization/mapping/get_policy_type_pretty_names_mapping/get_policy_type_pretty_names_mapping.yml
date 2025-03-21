@@ -1,0 +1,21 @@
+version: 2
+
+macros:
+  - name: get_policy_type_pretty_names_mapping
+    description: >
+      A macro that maps raw policy type names from various tools to standardized, 
+      user-friendly policy names. This ensures consistency across different sources 
+      by providing a uniform naming convention.
+    arguments:
+      - name: tool_name
+        type: string
+        description: >
+          The name of the tool from which the policy originates. 
+          Supported values include 'tenable-nessus-pro', 'tenable-io', 'sentinel-one', 
+          'qualys-vmdr', 'panw-panorama', 'panw-cortex', 'okta', 'msft-purview', 
+          'msft-office365', 'msft-intune', 'msft-aad', 'jamf-pro', 'cyberark-epm', 
+          'crowdstrike-falcon', 'cloudflare', 'zscaler-zia', and 'msft-sccm'.
+      - name: policy_type
+        type: string
+        description: >
+          The raw policy type name as it appears in the source data.

@@ -1,0 +1,82 @@
+# This is a comment.
+# Each line is a file pattern followed by one or more owners.
+
+# Default code owners
+# Order is important; the last matching pattern takes the most precedence.
+* @vena-security/engine
+
+# Project dotfiles
+.github/ @vena-security/engine
+.truffleignore @vena-security/engine
+.commitlintrc.json @vena-security/engine
+.pre-commit-config.yaml @vena-security/engine
+.gitingore @vena-security/engine
+.sops.yaml @vena-security/engine
+.env.sample @vena-security/engine
+.releaserc.json @vena-security/engine
+
+# Schema management and SQL files
+schema_management/ @vena-security/engine
+apex/ops/analytics/insights/queries/**/*.sql @vena-security/research
+apex/ops/scan_ingestion/normalization/custom_labelling_queries/**/*.sql @vena-security/research
+
+# Common
+common/ @vena-security/engine
+common/normalizers/ @vena-security/research
+common/validators/ @vena-security/research
+common/tests/ @vena-security/research
+common/utils/ @vena-security/research @vena-security/engine
+common/enums.py @vena-security/research @vena-security/engine
+
+# Apex
+apex/schedules/ @vena-security/engine
+apex/ops @vena-security/research
+apex/ops/app_db_sync/sync/operations/ @vena-security/engine
+apex/ops/collection/* @vena-security/engine
+apex/ops/scan_ingestion_ng/tool_integrations/**/*.json @vena-security/research
+apex/transformers/ @vena-security/research
+apex/transformers/**/*.json @vena-security/research
+
+# Unit tests
+tests/ @vena-security/engine
+tests/apex/transformers/ @vena-security/research
+tests/apex/common/normalizers/ @vena-security/research
+tests/apex/common/tests/ @vena-security/research
+tests/apex/ops/scan_ingestion_ng @vena-security/research
+tests/apex/ops/scoring @vena-security/research
+tests/apex/ops/correlations @vena-security/research
+
+# Notebooks
+notebooks/templates @vena-security/research
+notebooks/tool_integrations @vena-security/research
+
+# Scripts
+scripts/ @vena-security/research @vena-security/engine
+
+# Specific files
+pyproject.toml @vena-security/engine
+requirements.txt @vena-security/engine
+setup.cfg @vena-security/engine
+setup.py @vena-security/engine
+MANIFEST.in @vena-security/engine
+
+dagster_cloud_prod_us.yaml @vena-security/engine
+dagster_cloud_prod_eu.yaml @vena-security/engine
+dagster_cloud_staging.yaml @vena-security/engine
+
+# Docker
+.dockerignore @vena-security/engine
+**/Dockerfile @vena-security/engine
+**/*.Dockerfile @vena-security/engine
+
+# Infrastructure
+.tf @vena-security/infra
+.tfvars @vena-security/infra
+.hcl @vena-security/infra
+infrastructure/ @vena-security/infra
+
+# Taskfiles
+Taskfile.yml @vena-security/engine
+.taskfiles/ @vena-security/engine
+.task/ @vena-security/engine
+.task/research @vena-security/research

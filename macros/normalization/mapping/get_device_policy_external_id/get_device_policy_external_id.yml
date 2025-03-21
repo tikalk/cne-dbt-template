@@ -1,0 +1,26 @@
+version: 2
+
+macros:
+  - name: get_device_policy_external_id
+    description: |
+      This macro extracts the external policy ID from a given device policy JSON structure. It checks whether the prevention or device control policies are applied to the device, and if so, returns the corresponding policy ID. If neither policy is applied, it returns `NULL`.
+
+    arguments:
+      - name: device_policies
+        description: |
+          A JSON object containing the device policies. The macro checks for the `applied` status under both the "prevention" and "device_control" keys, and returns the associated `policy_id` when the policy is applied.
+        type: json
+
+    returns: string
+    examples:
+      - input:
+          device_policies: '{"prevention": {"applied": true, "policy_id": "12345"}}'
+        output: '12345'
+
+      - input:
+          device_policies: '{"device_control": {"applied": true, "policy_id": "67890"}}'
+        output: '67890'
+
+      - input:
+          device_policies: '{"prevention": {"applied": false}, "device_control": {"applied": false}}'
+        output: NULL

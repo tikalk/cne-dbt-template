@@ -1,0 +1,62 @@
+{
+  "name": "Dev Environment",
+  "dockerFile": "Dockerfile",
+  "runArgs": [
+    "--env-file",
+    ".env"
+  ],
+  "initializeCommand": "[[ -f .env ]] || touch .env",
+  "containerEnv": {
+    "DEV_CONTAINER": "true",
+    "SSH_AUTH_SOCK": "/tmp/op_sock",
+    "UV_LINK_MODE": "copy",
+    "SNOWFLAKE_PRIVATE_KEY_PATH": "/workspace/rsa_key.p8 ",
+    "DATABASE_HOST": "db",
+    "HISTFILE": "${localWorkspaceFolder}/.history",
+  },
+  "extensions": [
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "innoverio.vscode-dbt-power-user",
+    "bungcip.better-toml", // For handling dbt's `profiles.yml` and `.toml` files
+    "redhat.vscode-yaml", // YAML support
+    "EditorConfig.EditorConfig", // For consistent editor settings
+    "ms-azuretools.vscode-docker",
+    "snowflake.snowflake-sql",
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-pg"
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "/usr/local/bin/python",
+    "python.linting.enabled": true,
+    "python.linting.mypyEnabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.formatting.provider": "black",
+    "editor.formatOnSave": true,
+    "terminal.integrated.shell.linux": "/usr/bin/zsh",
+    "terminal.integrated.profiles.linux": {
+      "zsh": {
+        "path": "/usr/bin/zsh",
+        "args": [
+          "-c",
+          "source .venv/bin/activate; zsh"
+        ]
+      }
+    },
+    "terminal.integrated.defaultProfile.linux": "zsh",
+    "files.associations": {
+      "*.sql": "jinja-sql"
+    },
+    "docker.dockerode": "socket",
+    "docker.exposeDockerCli": true
+  },
+  "forwardPorts": [
+    5432
+  ],
+  "mounts": [
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.config/op,target=/home/vscode/.config/op,type=bind"
+  ],
+  "postCreateCommand": ".devcontainer/setup_devcontainer.sh"
+}

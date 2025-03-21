@@ -1,0 +1,97 @@
+name: "apex_dbt"
+version: "1.0.0"
+config-version: 2
+profile: "apex"
+test-paths: ["tests"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+dispatch:
+  - macro_namespace: dbt
+    search_order:
+      - apex_dbt
+      # - dbt_snowflake_query_tags
+      - dbt
+
+# query-comment:
+#   comment: '{{ dbt_snowflake_query_tags.get_query_comment(node) }}'
+#   append: true # Snowflake removes prefixed comments.
+
+  
+
+vars:
+  organization_id: "{{ env_var('ORG_ID', '2f2e4840-a901-424a-ba56-4404b64acb87') }}"
+  job_id: c8b38a6b-887c-4777-a413-6c68bfa46f80 #for local build
+  scoring_job_id: bc7b0139-84df-4062-be45-9fca853a4645 #for local build
+  instance_id: 46f1603d-b625-4c04-b99d-fdfc1592f196
+  source_database: "SAAS_STAGING"
+  marts_extension: "_GOLD"
+  staging_extension: "_SILVER"
+  staging_fqn: "silver"
+  staging_table_part: "_slv"
+
+models:
+  dbt_snowflake_monitoring:
+    +schema: "snowflake_monitoring"
+    +tags:
+      - snowflake_monitoring
+
+  elementary:
+    ## elementary models will be created in the schema '<your_schema>_elementary'
+    +schema: "elementary"
+    +tags:
+      - elementary
+    ## To disable elementary for dev, uncomment this:
+    # enabled: "{{ target.name in ['prod','analytics'] }}"
+
+  apex_dbt:
+
+    metrics:
+      +group: metrics
+      +tags:
+        - metrics
+      silver:            
+        +tags:
+          - silver
+        +materialized: view
+      gold:            
+        +tags:
+          - gold
+        +materialized: table
+
+
+    tools:
+      +tags:
+        - tools
+      crowdstrike_falcon:
+        +group: crowdstrike_falcon
+        +tags:
+          - crowdstrike_falcon
+        silver:            
+          +materialized: view
+          +tags:
+            - silver
+        gold:            
+          +materialized: table
+          +tags:
+            - gold
+      okta:
+        +tags:
+          - okta
+        silver:            
+          +materialized: view
+        gold:            
+          +materialized: table
+  
+  #for incremental models
+  +on_schema_change: "sync_all_columns"
+
+
+flags:
+  require_explicit_package_overrides_for_builtin_materializations: False
+  source_freshness_run_project_hooks: True
+  

@@ -1,0 +1,37 @@
+version: 2
+
+macros:
+  - name: normalize_last_seen_at
+    description: |
+      This macro normalizes the `last_seen_at` timestamp. It returns the following:
+      1. If `last_seen_at` is `NULL`, it returns `collection_at`.
+      2. If `last_seen_at` is the UNIX epoch timestamp (`1970-01-01 00:00:00`), it returns `NULL`.
+      3. Otherwise, it returns the `last_seen_at` value.
+
+    arguments:
+      - name: last_seen_at
+        description: |
+          The timestamp representing the last time the asset was seen. If it is NULL or the UNIX epoch, it will be normalized to `collection_at` or NULL.
+        type: timestamp
+
+      - name: collection_at
+        description: |
+          The timestamp when the asset was collected. Used as a fallback if `last_seen_at` is NULL.
+        type: timestamp
+
+    returns: timestamp
+    examples:
+      - input:
+          last_seen_at: null
+          collection_at: '2025-03-09 12:00:00'
+        output: '2025-03-09 12:00:00'
+
+      - input:
+          last_seen_at: '1970-01-01 00:00:00'
+          collection_at: '2025-03-09 12:00:00'
+        output: null
+
+      - input:
+          last_seen_at: '2025-03-09 11:00:00'
+          collection_at: '2025-03-09 12:00:00'
+        output: '2025-03-09 11:00:00'

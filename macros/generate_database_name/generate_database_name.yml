@@ -1,0 +1,9 @@
+macros:
+  - name: generate_database_name
+    description: This macro contains the generate_database_name details
+    arguments:
+      - name: custom_database_name
+        type: str
+        description: database name
+
+version: 2

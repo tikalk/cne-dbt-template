@@ -1,0 +1,12 @@
+version: 2
+
+macros:
+  - name: get_custom_alias
+    description: Decide on table name based on environment
+    arguments:
+      - name: custom_alias_name
+        type: string
+        description: Name of schema to use
+      - name: node
+        type: string
+        description: Name of the node

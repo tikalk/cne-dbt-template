@@ -1,0 +1,39 @@
+version: 2
+
+macros:
+  - name: normalized_asset_hostname
+    description: |
+      This macro normalizes asset hostnames by performing the following operations:
+      1. Converts the hostname to lowercase (if `lower_case` is `true`).
+      2. Optionally removes special characters (quotes and backticks) and replaces spaces with hyphens (if `remove_special_chars` is `true`).
+      3. Strips the `.local` or `.lan` suffix (if present).
+
+    arguments:
+      - name: n
+        description: |
+          The hostname to be normalized.
+        type: string
+
+      - name: lower_case
+        description: |
+          A boolean flag to convert the hostname to lowercase. Defaults to `true`.
+        type: boolean
+
+      - name: remove_special_chars
+        description: |
+          A boolean flag to remove special characters and replace spaces with hyphens. Defaults to `true`.
+        type: boolean
+
+    returns: string
+    examples:
+      - input: 'My Hostname.local'
+        output: 'my-hostname'
+
+      - input: 'My`Hostname "With" Special Characters'
+        output: 'my-hostname-with-special-characters'
+
+      - input: 'My.Hostname.lan'
+        output: 'my-hostname'
+
+      - input: 'localhost'
+        output: 'localhost'

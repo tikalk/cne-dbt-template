@@ -1,0 +1,3 @@
+/target*
+/macros
+/dbt_packages

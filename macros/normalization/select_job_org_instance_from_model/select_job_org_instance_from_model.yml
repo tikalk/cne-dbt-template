@@ -1,0 +1,7 @@
+version: 2
+
+macros:
+  - name: select_job_org_instance_from_model
+    description: >
+      A macro that selects job_id, org_id, and instance_id from a model.
+      This ensures consistency when retrieving these identifiers from transformed models.

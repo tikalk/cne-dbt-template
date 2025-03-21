@@ -1,0 +1,91 @@
+{
+  "rules": {
+    "header-max-length": [
+      2,
+      "always",
+      72
+    ],
+    "body-leading-blank": [
+      2,
+      "always"
+    ],
+    "type-empty": [
+      2,
+      "never"
+    ],
+    "type-enum": [
+      2,
+      "always",
+      [
+        "feat",
+        "fix",
+        "docs",
+        "chore",
+        "refactor",
+        "test",
+        "revert"
+      ]
+    ],
+    "scope-empty": [
+      2,
+      "never"
+    ],
+    "scope-enum": [
+      2,
+      "always",
+      [
+        "dbt",
+        "deps",
+        "tests",
+        "correlations",
+        "insights",
+        "infra",
+        "common",
+        "dagster",
+        "snowflake",
+        "crowdstrike-falcon",
+        "msft-aad",
+        "msft-defender",
+        "msft-intune",
+        "okta",
+        "panw-cortex",
+        "sentinel-one",
+        "tenable-io",
+        "tenable-sc",
+        "vena-email-auth",
+        "msft-office365",
+        "jumpcloud",
+        "zscaler-zia",
+        "knowbe4-kmsat",
+        "proofpoint-psat",
+        "qualys-vmdr",
+        "jamf-pro",
+        "google-workspace",
+        "tessian",
+        "cyberark-epm",
+        "cyberark-pam",
+        "servicenow-cmdb",
+        "rapid7-insightvm",
+        "msft-purview",
+        "cisco-umbrella",
+        "cloudflare",
+        "delinea-pam",
+        "panw-panorama",
+        "msft-ad",
+        "msft-sccm",
+        "sailpoint-identityiq",
+        "crowdstrike-falcon-adversary",
+        "claroty-ctd",
+        "workspace-one",
+        "island",
+        "ironscales",
+        "cisco-edr",
+        "wiz",
+        "app-db-sync",
+        "scoring",
+        "kandji",
+        "siv2-infra"
+      ]
+    ]
+  }
+}

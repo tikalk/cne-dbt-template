@@ -1,0 +1,121 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: end-of-file-fixer # Ensures that a file is either empty, or ends with one newline.
+      - id: check-ast # Simply check whether the files parse as valid python
+      - id: check-toml # This hook checks toml files for parseable syntax.
+      - id: check-yaml # This hook checks yaml files for parseable syntax.
+        exclude: ^(cli/resources/templates)/
+      - id: check-added-large-files # Prevent giant files from being committed (500kB)
+      - id: check-merge-conflict # Check for files that contain merge conflict strings.
+      - id: detect-private-key # Detects the presence of private keys
+
+
+- repo: https://github.com/sqlfluff/sqlfluff
+  rev: 3.3.1
+  hooks:
+    - id: sqlfluff-lint
+      name: SQLFluff Lint
+      files: ^models/|^analysis/|^tests/
+      entry: sqlfluff lint
+      language: python
+      require_serial: true
+      types: [sql]
+      additional_dependencies: ['sqlfluff-templater-dbt', 'dbt-snowflake']
+      args: [
+        '--dialect', 'snowflake',
+        '--templater', 'dbt',
+        '--rules', 'L001,L002,L003,L004,L005,L006,L007,L008,L009,L010,L011,L012,L013,L014,L015,L016,L017,L018,L019,L020'
+      ]
+    
+    - id: sqlfluff-fix
+      name: SQLFluff Fix
+      files: ^models/|^analysis/|^tests/
+      entry: sqlfluff fix
+      language: python
+      require_serial: true
+      types: [sql]
+      additional_dependencies: ['sqlfluff-templater-dbt', 'dbt-snowflake']
+      args: [
+        '--dialect', 'snowflake',
+        '--templater', 'dbt',
+        '--rules', 'L001,L002,L003,L004,L005,L006,L007,L008,L009,L010,L011,L012,L013,L014,L015,L016,L017,L018,L019,L020'
+      ]
+
+
+-   repo: https://github.com/PyCQA/isort
+    rev: 6.0.1
+    hooks:
+    -   id: isort
+        args: ["--profile", "black", "--filter-files"]
+
+
+-   repo: https://github.com/psf/black
+    rev: 25.1.0
+    hooks:
+    -   id: black
+        language_version: python3
+        args: [--line-length=150]
+
+-   repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.15.0
+    hooks:
+      - id: mypy
+        args: ["--no-namespace-packages","--ignore-missing-imports",]
+        additional_dependencies: ["types-PyYAML"]
+
+-   repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.11.1
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+
+
+-   repo: https://github.com/dbt-checkpoint/dbt-checkpoint
+    rev: v2.0.6
+    hooks:
+    -   id: check-script-semicolon
+    -   id: dbt-parse
+        files: ^models/|^analysis/|^macros/|^tests/
+        stages: [pre-push]
+    # -   id: check-script-has-no-table-name
+    #     files: ^models
+    #     stages: [pre-push]
+    # -   id: check-macro-arguments-have-desc
+    #     stages: [pre-push]
+    # -   id: check-macro-has-description
+    #     stages: [pre-push]
+    # -   id: dbt-test
+    #     files: ^models/|^analysis/|^macros/|^tests/ 
+    #     args: ["--", "--resource-type=unit"]
+    #     stages: [pre-push]
+
+
+-   repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.22.0
+    hooks:
+      - id: commitlint
+        stages: [commit-msg]
+        language: node
+        entry: commitlint --edit
+        pass_filenames: false
+        always_run: true        
+
+-   repo: local
+    hooks:
+      - id: run-sast
+        name: run-sast
+        entry: bearer scan . 
+        language: system
+        stages: [pre-push]
+        pass_filenames: false
+        exclude: ^(cli/resources/templates)/
+        
+      - id: cli-validate
+        name: cli validate
+        entry: cli_validate
+        description: This hook runs cli validate
+        language: python 
+        files: ^(models)\/.+\.(yml|yaml|sql)$
+        # stages: [pre-push]

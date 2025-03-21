@@ -1,0 +1,14 @@
+version: 2
+
+macros:
+  - name: get_os_type
+    description: >
+      A macro that maps raw OS names to standardized OS type labels. 
+      This helps maintain consistency when categorizing operating systems in datasets.
+    arguments:
+      - name: os_name
+        type: string
+        description: >
+          The column or value representing the operating system name. 
+          Expected values include 'Windows', 'Mac', and 'Linux'. 
+          Any other value defaults to 'OS_OTHER'.

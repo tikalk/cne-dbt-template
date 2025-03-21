@@ -1,0 +1,46 @@
+name: CLI Tests
+
+on:
+    push:
+      branches:
+        - main #
+    pull_request:
+      types: [opened, reopened, synchronize] 
+
+  
+env:
+  DIRECTORY_TO_CHECK: "cli"  # Change this to your target directory
+
+jobs:
+  build-cli:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Check for changes in directory
+        id: changes_check
+        run: |
+          if git diff --quiet HEAD~1 HEAD -- $DIRECTORY_TO_CHECK; then
+            echo "changes=false" >> $GITHUB_ENV
+          else
+            echo "changes=true" >> $GITHUB_ENV
+          fi
+
+      - name: Install the latest version of uv
+        run: |
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+            echo "$HOME/.local/bin" >> $GITHUB_PATH
+            export PATH="$HOME/.local/bin:$PATH"
+            uv venv
+            uv sync
+            uv pip install -e .
+  
+      - name: Run CLI Tests
+        if: env.changes == 'true'
+        run: |
+          echo "Changes were found in $DIRECTORY_TO_CHECK. Proceeding with additional steps..."
+          source .venv/bin/activate
+          tox -e tests

@@ -1,0 +1,117 @@
+version: "3"
+
+dotenv: ['.env', '{{.ENV}}/.env', '{{.HOME}}/.env']
+
+includes:
+  dbt:
+    taskfile: .task/dbt.yml
+
+
+tasks:
+  install-uv:
+    cmds:
+      - brew install uv
+    silent: true
+    internal: true
+    import_command: false
+    status:
+      - brew ls --versions uv
+
+  install-bearer:
+    cmds:
+      - brew install bearer/tap/bearer
+    silent: true
+    internal: true
+    import_command: false
+    status:
+      - brew ls --versions bearer
+
+  install-gh:
+    desc: Install gh
+    cmds:
+      - brew install gh
+      - gh auth login
+    silent: true
+    internal: true
+    import_command: false
+    status:
+      - brew ls --versions gh
+
+  setup-env:
+    desc: Setup the environment
+    import_command: false
+    cmds:
+      - task: install-uv
+      - task: install-bearer
+      - task: install-gh
+      - uv python install 3.11
+      - uv venv
+      - zsh -c "source ./.venv/bin/activate && uv sync"
+      - zsh -c "source ./.venv/bin/activate && uv pip install -e ."
+      - zsh -c "source ./.venv/bin/activate && pre-commit install --hook-type pre-commit --hook-type pre-push"
+      - zsh -c "source ./.venv/bin/activate && pre-commit autoupdate"
+      - task: dbt:get-latest-manifest
+      - "echo Checking Environment Variables"
+      - task: view-env
+  
+  test-setup:
+    desc: Setup the environment for testing
+    cmds:
+      - task: validate-env
+      - task: dbt:debug
+      - task: dbt:get-latest-manifest
+
+  validate:
+    desc: Validate the project
+    cmds:
+      - set -o allexport
+      - source .env
+      - set +o allexport    
+      - pre-commit run --all-files
+
+  cli:
+    desc: Run the CLI
+    import_command: false
+    silent: false
+    cmds:
+      - task: validate-env
+      - |
+        export PYTHONPATH=.
+        python cli/dbt_cli.py start
+
+  check-env:
+    desc: "Check if an environment variable exists"
+    import_command: false
+    silent: true
+    cmds:
+      - |
+        if [ -z "${{.VAR_NAME}}" ]; then
+          echo "❌ ERROR: {{.VAR_NAME}} is missing!"
+          exit 1
+        else
+          echo "{{.VAR_NAME}} = ${{.VAR_NAME}}"
+        fi
+
+
+  view-env:
+    desc: View the environment
+    cmds:
+      - task: check-env
+        vars: {VAR_NAME: "SNOWFLAKE_ACCOUNT"}          
+      - task: check-env
+        vars: {VAR_NAME: "SNOWFLAKE_DATABASE"}
+      - task: check-env
+        vars: {VAR_NAME: "SNOWFLAKE_WAREHOUSE"}          
+      - task: check-env
+        vars: {VAR_NAME: "SNOWFLAKE_PRIVATE_KEY_PATH"}          
+      - task: check-env
+        vars: {VAR_NAME: "SNOWFLAKE_ROLE"}          
+      - task: check-env
+        vars: {VAR_NAME: "SNOWFLAKE_USERNAME"}
+          
+  validate-env:
+    desc: "Fail if any required environment variables are missing"
+    cmds:
+      - task: view-env
+    status:
+      - '[ -n "$SNOWFLAKE_ACCOUNT" ] && [ -n "$SNOWFLAKE_DATABASE" ] && [ -n "$SNOWFLAKE_WAREHOUSE" ] && [ -n "$SNOWFLAKE_PRIVATE_KEY_PATH" ] && [ -n "$SNOWFLAKE_ROLE" ] && [ -n "$SNOWFLAKE_USERNAME" ]'

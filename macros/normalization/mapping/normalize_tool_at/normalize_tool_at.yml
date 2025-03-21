@@ -1,0 +1,31 @@
+version: 2
+
+macros:
+  - name: normalize_tool_at
+    description: |
+      This macro normalizes the `tool_at` timestamp. It returns the following:
+      1. If `tool_at` is `NULL`, it returns `collection_at`.
+      2. Otherwise, it returns the `tool_at` value.
+
+    arguments:
+      - name: tool_at
+        description: |
+          The timestamp representing when the tool was last used or registered. If it is `NULL`, it will be replaced by `collection_at`.
+        type: timestamp
+
+      - name: collection_at
+        description: |
+          The timestamp when the asset was collected. Used as a fallback if `tool_at` is `NULL`.
+        type: timestamp
+
+    returns: timestamp
+    examples:
+      - input:
+          tool_at: null
+          collection_at: '2025-03-09 12:00:00'
+        output: '2025-03-09 12:00:00'
+
+      - input:
+          tool_at: '2025-03-09 11:00:00'
+          collection_at: '2025-03-09 12:00:00'
+        output: '2025-03-09 11:00:00'

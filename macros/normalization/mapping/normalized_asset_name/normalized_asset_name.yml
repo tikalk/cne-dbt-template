@@ -1,0 +1,43 @@
+version: 2
+
+macros:
+  - name: normalized_asset_name
+    description: >
+      This macro normalizes the asset name by performing the following operations:
+      1. If the asset name is empty, 'localhost', NULL, or 'nan', it returns 'Unknown'.
+      2. If the asset name ends with `.local` or `.lan`, it removes those suffixes.
+      3. It also has optional parameters to convert the name to lowercase or remove special characters (though these features are not implemented in the current macro).
+
+    arguments:
+      - name: n
+        description: >
+          The asset name to be normalized. This will be processed by removing certain suffixes and potentially transforming the string.
+        type: string
+
+      - name: lower_case
+        description: >
+          Optional argument to convert the asset name to lowercase. This argument is not yet implemented in the current version.
+        type: boolean
+
+      - name: remove_special_chars
+        description: >
+          Optional argument to remove special characters from the asset name. This argument is not yet implemented in the current version.
+        type: boolean
+
+    returns: string
+    examples:
+      - input:
+          n: 'device.local'
+        output: 'device'
+
+      - input:
+          n: 'localhost'
+        output: 'Unknown'
+
+      - input:
+          n: 'server.lan'
+        output: 'server'
+
+      - input:
+          n: 'nan'
+        output: 'Unknown'

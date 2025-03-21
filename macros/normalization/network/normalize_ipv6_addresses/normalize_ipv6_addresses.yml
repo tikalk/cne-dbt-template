@@ -1,0 +1,32 @@
+version: 2
+
+macros:
+  - name: normalize_ipv6_addresses
+    description: |
+      This macro normalizes and validates IPv6 addresses. It checks if the given `ipv6_add` is a valid IPv6 address and ensures the address is not part of the following reserved ranges:
+      1. Loopback (`::1/128`)
+      2. Link-local (`fe80::/10`)
+      3. Multicast (`ff00::/8`)
+
+    arguments:
+      - name: ipv6_add
+        description: |
+          The IPv6 address to be validated and normalized.
+        type: string
+
+    returns: string
+    examples:
+      - input: '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
+        output: '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
+
+      - input: '::1'
+        output: null
+
+      - input: 'fe80::1'
+        output: null
+
+      - input: 'ff00::1'
+        output: null
+
+      - input: '2001:db8::ff00:42:8329'
+        output: '2001:db8::ff00:42:8329'

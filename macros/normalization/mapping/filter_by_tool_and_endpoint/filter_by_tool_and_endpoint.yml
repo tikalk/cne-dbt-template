@@ -1,0 +1,18 @@
+version: 2
+
+macros:
+  - name: filter_by_tool_and_endpoint
+    description: >
+      A macro that generates a SQL filter condition based on job_id, org_id, instance_id, 
+      tool name, and endpoint. This is useful for filtering tables by tool and endpoint 
+      within a specific job execution context.
+    arguments:
+      - name: ref_name
+        type: string
+        description: The reference (alias) of the table or model being filtered.
+      - name: tool_name
+        type: string
+        description: The name of the tool to filter by.
+      - name: endpoint
+        type: string
+        description: The endpoint associated with the tool to filter by.

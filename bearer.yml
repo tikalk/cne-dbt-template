@@ -1,0 +1,2 @@
+rule:
+  skip-rule: [python_lang_path_traversal]

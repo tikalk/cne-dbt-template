@@ -1,0 +1,233 @@
+version: '3'
+
+
+env:
+  DBT_PROFILE: "apex"
+  DBT_TARGET: "staging"
+  DBT_PROJECT_DIR: "."
+  DBT_STAGING_EXTENSION: "_SILVER"
+  DBT_MARTS_EXTENSION: "_GOLD"
+vars:
+  SLIM_PARAMS: '{{ if .USE_SLIM_PARAMS }}--select "+state:modified" --state ./target/last_run{{ else }}{{ end }}'
+
+tasks:
+  deps:
+    desc: Install dbt dependencies
+    cmds:
+      - dbt deps --project-dir {{.DBT_PROJECT_DIR}}
+
+  clean:
+    desc: Clean dbt project
+    cmds:
+      - dbt clean --project-dir {{.DBT_PROJECT_DIR}}
+
+  debug:
+    desc: Debug dbt connection
+    cmds:
+      - dbt debug --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}}
+
+  compile:
+    desc: Compile dbt project
+    deps: [deps]
+    cmds:
+      - dbt compile --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}}
+
+  run:
+    desc: Run dbt models
+    deps: [deps]
+    cmds:
+      - dbt run --exclude dbt_snowflake_monitoring --exclude elementary --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}} --fail-fast
+
+  changed_models:
+    desc: View changed dbt models
+    deps: [deps]
+    cmds:
+      - dbt ls --exclude dbt_snowflake_monitoring --exclude elementary --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}}
+
+
+  run-model:
+    desc: Run dbt models
+    deps: [deps]
+    cmds:
+      - dbt run --select {{.NAME}} --exclude dbt_snowflake_monitoring --exclude elementary --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}}
+    vars:
+      NAME: '{{.NAME | default "*"}}'
+
+  test:
+    desc: Run dbt tests
+    deps: [deps]
+    cmds:
+      - dbt test --exclude dbt_snowflake_monitoring --exclude elementary --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}}
+
+  docs:
+    desc: Generate dbt documentation
+    deps: [deps]
+    cmds:
+      - dbt docs generate --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}}
+      - dbt docs serve --port 8080
+
+  build:
+    desc: Run full dbt build (run + test)
+    deps: [deps]
+    cmds:
+      - dbt build  --exclude dbt_snowflake_monitoring --exclude elementary --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}}
+
+  seed:
+    desc: Load seed files into the data warehouse
+    deps: [deps]
+    cmds:
+      - dbt seed --exclude dbt_snowflake_monitoring --exclude elementary --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}}
+
+  snapshot:
+    desc: Run dbt snapshot
+    cmds:
+      - dbt snapshot --exclude dbt_snowflake_monitoring --exclude elementary  --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}}
+
+  lint:
+    desc: Run SQLFluff linting
+    deps: [deps]
+    cmds:
+      - sqlfluff lint models/
+
+  format:
+    desc: Format SQL files using SQLFluff
+    cmds:
+      - sqlfluff fix models/ 
+
+  edr-report:
+    desc: Run data elementry report
+    cmds:
+      - edr report --project-dir {{.DBT_PROJECT_DIR}} 
+
+  ci:
+    desc: CI pipeline (compile, build, test)
+    cmds:
+      - task: compile
+      - task: build
+
+  clean-db:
+    desc: Delete and rebuild database
+    silent: true
+    cmds:
+      - |
+        source .env
+        dbt run-operation delete_database --args  "{database_name: ${SNOWFLAKE_DATABASE} }"
+        dbt run-operation delete_database --args  "{database_name: ${SNOWFLAKE_DATABASE}{{.DBT_MARTS_EXTENSION}} }"
+        dbt run-operation delete_database --args  "{database_name: ${SNOWFLAKE_DATABASE}{{.DBT_STAGING_EXTENSION}} }"
+        dbt run-operation create_database --args  "{database_name: ${SNOWFLAKE_DATABASE}{{.DBT_MARTS_EXTENSION}} }"
+        dbt run-operation create_database --args  "{database_name: ${SNOWFLAKE_DATABASE} }"
+        dbt run-operation create_database --args  "{database_name: ${SNOWFLAKE_DATABASE}{{.DBT_STAGING_EXTENSION}} }"
+
+  gh-login:
+    desc: "Authenticate GitHub CLI"
+    cmds:
+      - gh auth login
+    silent: false
+    status:
+      - gh auth status || task:gh-login
+
+
+  get-latest-manifest:
+    desc: Get latest manifest from github repo
+    deps: ["gh-login"]
+    silent: true
+    cmds:
+      - |
+        mkdir -p target/last_run
+        gh release download --pattern "manifest.json" --clobber --dir target/last_run
+
+  enable-slim:
+    desc: Enable dbt slim mode
+    silent: true
+    cmds:
+      - |
+        ENV_FILE=".env"
+        NEW_VALUE="True"
+
+        if [ ! -f "$ENV_FILE" ]; then
+          echo "Error: $ENV_FILE file not found!"
+          exit 1
+        fi      
+        if grep -q "^USE_SLIM_PARAMS=" "$ENV_FILE"; then
+          # Update the existing value (backup file created with .bak extension)
+          sed -i.bak "s/^USE_SLIM_PARAMS=.*/USE_SLIM_PARAMS=$NEW_VALUE/" "$ENV_FILE"
+        else
+          # Append the new variable at the end of the file
+          echo "USE_SLIM_PARAMS=$NEW_VALUE" >> "$ENV_FILE"
+        fi        
+
+  disable-slim:
+    desc: Enable dbt slim mode
+    silent: true
+    cmds:
+      - |
+        ENV_FILE=".env"
+        NEW_VALUE="False"
+
+        if [ ! -f "$ENV_FILE" ]; then
+          echo "Error: $ENV_FILE file not found!"
+          exit 1
+        fi      
+        if grep -q "^USE_SLIM_PARAMS=" "$ENV_FILE"; then
+          # Update the existing value (backup file created with .bak extension)
+          sed -i.bak "s/^USE_SLIM_PARAMS=.*/USE_SLIM_PARAMS=$NEW_VALUE/" "$ENV_FILE"
+        else
+          # Append the new variable at the end of the file
+          echo "USE_SLIM_PARAMS=$NEW_VALUE" >> "$ENV_FILE"
+        fi        
+
+  set-source:
+    desc: Set DBT source to staging schema
+    silent: true
+    internal: true
+    cmds:
+      - |
+        ENV_FILE=".env"
+        NEW_VALUE="{{.source_name}}"
+
+        if [ ! -f "$ENV_FILE" ]; then
+          echo "Error: $ENV_FILE file not found!"
+          exit 1
+        fi      
+        if grep -q "^SOURCE_DATABASE=" "$ENV_FILE"; then
+          # Update the existing value (backup file created with .bak extension)
+          sed -i.bak "s/^SOURCE_DATABASE=.*/SOURCE_DATABASE=$NEW_VALUE/" "$ENV_FILE"
+          echo "Updated SOURCE_DATABASE to $NEW_VALUE in $ENV_FILE"
+        else
+          # Append the new variable at the end of the file
+          echo "SOURCE_DATABASE=$NEW_VALUE" >> "$ENV_FILE"
+          echo "Appended SOURCE_DATABASE=$NEW_VALUE to $ENV_FILE"
+        fi        
+
+  set-source-staging:
+    desc: Set DBT source to staging schema
+    silent: false
+    cmds:
+      - task: set-source
+        vars:
+          source_name: "SAAS_STAGING"    
+
+
+  set-source-production-us:
+    desc: Set DBT source to production schema
+    silent: true
+    cmds:
+      - task: set-source
+        vars:
+          source_name: "SAAS_PROD_US"    
+
+  set-source-production-eu:
+    desc: Set DBT source to production schema
+    silent: true
+    cmds:
+      - task: set-source
+        vars:
+          source_name: "SAAS_PROD_EU"    
+
+  set-source-local:
+    desc: Set DBT source to local schema
+    silent: true
+    cmds:
+      - task: set-source
+        vars:
+          source_name: "${SNOWFLAKE_DATABASE}"    

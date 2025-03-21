@@ -1,0 +1,7 @@
+version: 2
+
+macros:
+  - name: select_job_org_instance_from_source
+    description: >
+      A macro that selects job_id, org_id, and instance_id from a source table.
+      This ensures consistency when retrieving these identifiers from raw source data.

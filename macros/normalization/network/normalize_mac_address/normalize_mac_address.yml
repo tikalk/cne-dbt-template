@@ -1,0 +1,29 @@
+version: 2
+
+macros:
+  - name: normalize_mac_address
+    description: |
+      This macro normalizes and validates MAC addresses. It performs the following steps:
+      1. Strips non-hexadecimal characters from the MAC address.
+      2. Validates that the address consists of exactly 12 hexadecimal characters.
+      3. Reformats the address into the standard MAC address format (xx:xx:xx:xx:xx:xx).
+
+    arguments:
+      - name: mac_add
+        description: |
+          The MAC address to be normalized and validated.
+        type: string
+
+    returns: string
+    examples:
+      - input: '00:1A:2B:3C:4D:5E'
+        output: '00:1a:2b:3c:4d:5e'
+
+      - input: '001a2b3c4d5e'
+        output: '00:1a:2b:3c:4d:5e'
+
+      - input: '00-1A-2B-3C-4D-5E'
+        output: '00:1a:2b:3c:4d:5e'
+
+      - input: 'invalid_mac'
+        output: null

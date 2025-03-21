@@ -1,0 +1,177 @@
+name: DBT Build
+
+on:
+  push:
+    branches:
+      - main #
+  pull_request:
+    types: [closed, opened, synchronize]  # 👈 Add this trigger for PR closures      
+
+
+jobs:
+  run-dbt:
+    name: Build DBT Models
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Calc dataset name
+        run: |        
+          echo "github_ref: ${{ github.ref }}"
+          echo "event_name: ${{ github.event_name }}"
+          echo "action: ${{ github.event.action }}"
+          echo "number: ${{ github.event.number }}"
+
+          branch_name=${{ github.event.number }}
+
+          # If the branch is main, append the latest short commit hash
+          if [ -z "$branch_name" ] || [ "$branch_name" == "main" ]; then
+            short_commit_hash=$(git rev-parse --short HEAD)
+            branch_name="${branch_name}_${short_commit_hash}"
+          fi
+          
+          dataset_name=$(echo "$branch_name" | sed 's/[^a-zA-Z0-9_]/_/g')
+          echo "dataset_name: SAAS_pr__${dataset_name}"
+          echo "DB_NAME=pr__${dataset_name}" >> $GITHUB_ENV        
+
+      - name: Install the latest version of uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          export PATH="$HOME/.local/bin:$PATH"
+          uv venv
+          uv sync
+          uv pip install -e .
+
+      - name: Write rsa_key to file
+        env:
+          SNOWFLAKE_PRIVATE_KEY_DATA: ${{ secrets.SNOWFLAKE_PRIVATE_KEY_DATA }}
+        run: |
+          echo "$SNOWFLAKE_PRIVATE_KEY_DATA" > /tmp/rsa_key.p8
+          echo "SNOWFLAKE_PRIVATE_KEY_PATH=/tmp/rsa_key.p8" >> $GITHUB_ENV
+
+
+      - uses: robinraju/release-downloader@v1
+        with:
+          latest: true
+          out-file-path: target/last_run
+          fileName: '*.json'
+
+
+      - name: Run File Validation
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ vars.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_DATABASE: SAAS_${{ env.DB_NAME }}
+          SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}          
+          SNOWFLAKE_USERNAME: ${{ vars.SNOWFLAKE_USERNAME }}
+          SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
+          SNOWFLAKE_SCHEMA: "${{ vars.SNOWFLAKE_SCHEMA }}" 
+          SOURCE_DATABASE: "SAAS_STAGING"
+        run: |
+          source .venv/bin/activate          
+          dbt deps
+          dbt parse
+          pre-commit run --all-files
+            
+  
+      - name: Run DBT
+        if: (github.event_name == 'push') || (github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize'))
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ vars.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_DATABASE: SAAS_${{ env.DB_NAME }}
+          SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}          
+          SNOWFLAKE_USERNAME: ${{ vars.SNOWFLAKE_USERNAME }}
+          SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
+          SNOWFLAKE_SCHEMA: "${{ vars.SNOWFLAKE_SCHEMA }}" 
+          SOURCE_DATABASE: "SAAS_STAGING"
+        run: |
+          source .venv/bin/activate      
+          dbt deps          
+          dbt debug
+          dbt run-operation create_database --args "{database_name: ${SNOWFLAKE_DATABASE}}"
+          dbt run-operation create_database --args "{database_name: ${SNOWFLAKE_DATABASE}_GOLD}"
+          dbt run-operation create_database --args "{database_name: ${SNOWFLAKE_DATABASE}_SILVER}"
+          if ${{ github.ref == 'refs/heads/main' }}; then
+            dbt build --exclude dbt_snowflake_monitoring --exclude elementary
+          else
+            dbt build --exclude dbt_snowflake_monitoring --exclude elementary --select "+state:modified+" --state ./target/last_run
+          fi
+                    
+      - name: Prepare Docs Site Artifact
+        if: (github.event_name == 'push')
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ vars.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_DATABASE: SAAS_${{ env.DB_NAME }}
+          SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}          
+          SNOWFLAKE_USERNAME: ${{ vars.SNOWFLAKE_USERNAME }}
+          SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
+          SNOWFLAKE_SCHEMA: "${{ vars.SNOWFLAKE_SCHEMA }}" 
+        run: |
+          source .venv/bin/activate          
+          dbt docs generate --static
+          mkdir -p docs_site
+          cp target/static_index.html target/index.html target/manifest.json target/catalog.json docs_site
+
+      - name: Extract release version
+        if: (github.event_name == 'push')
+        run: |
+          # Get today's date in YYYY.MM format
+          TODAY=$(date +"%Y.%m")
+
+          # Fetch existing tags
+          git fetch --tags > /dev/null 2>&1
+          EXISTING_TAGS=$(git tag | grep "^$TODAY" | sort -V)
+
+          # Determine the next increment
+          if [[ -z "$EXISTING_TAGS" ]]; then
+              NEW_TAG="${TODAY}.1"
+          else
+              LAST_TAG=$(echo "$EXISTING_TAGS" | tail -n 1)
+              LAST_INCREMENT=${LAST_TAG##*.}  # Extract the last number
+              NEW_TAG="${TODAY}.$((LAST_INCREMENT + 1))"
+          fi
+
+          # Print the new tag
+          echo "$NEW_TAG"
+          echo "RELEASE_VERSION=$NEW_TAG" >> $GITHUB_ENV
+
+   
+      - name: Create and push Git tag
+        if: (github.event_name == 'push')
+        run: |
+          git tag $RELEASE_VERSION
+          git push origin $RELEASE_VERSION
+
+      - name: Upload release asset
+        if: (github.event_name == 'push')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ env.RELEASE_VERSION }}
+          files: |
+              target/static_index.html
+              target/index.html
+              target/manifest.json
+              target/catalog.json
+              target/run_results.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cleanup (e.g., delete resources tied to the branch)
+        if:  (github.event.action == 'closed' || github.ref == 'refs/heads/main')
+        env:
+          SNOWFLAKE_ACCOUNT: ${{ vars.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_DATABASE: SAAS_${{ env.DB_NAME }}
+          SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}          
+          SNOWFLAKE_USERNAME: ${{ vars.SNOWFLAKE_USERNAME }}
+          SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
+          SNOWFLAKE_SCHEMA: "${{ vars.SNOWFLAKE_SCHEMA }}" 
+        run: |
+            source .venv/bin/activate          
+            dbt deps
+            dbt run-operation delete_database --args "{database_name: ${SNOWFLAKE_DATABASE}}"
+            dbt run-operation delete_database --args "{database_name: ${SNOWFLAKE_DATABASE}_GOLD}"
+            dbt run-operation delete_database --args "{database_name: ${SNOWFLAKE_DATABASE}_SILVER"}

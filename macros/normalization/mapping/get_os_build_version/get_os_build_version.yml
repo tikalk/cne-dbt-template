@@ -1,0 +1,37 @@
+version: 2
+
+macros:
+  - name: get_os_build_version
+    description: |
+      This macro extracts the build version of an operating system based on the distribution and version string.
+      - For Windows distributions, it extracts the build version from the `os_version` string using a regular expression that matches Windows build formats.
+      - For macOS distributions, it extracts the build version using a regular expression designed for macOS version formats.
+      - For Linux distributions (Ubuntu, CentOS, SLES, Fedora, RHEL, Debian), it extracts the version from the `os_version` string using a regular expression for Linux version formats.
+
+    arguments:
+      - name: os_dist
+        description: |
+          The operating system distribution (e.g., 'Windows 10', 'Ubuntu', 'Sonoma'). This determines which regular expression to use for extracting the build version.
+        type: string
+
+      - name: os_version
+        description: |
+          The full version string of the operating system. This is used in combination with the `os_dist` to extract the specific build version.
+        type: string
+
+    returns: string
+    examples:
+      - input:
+          os_dist: 'Windows 10'
+          os_version: '10.0.19042.928'
+        output: '19042.928'
+
+      - input:
+          os_dist: 'Ubuntu'
+          os_version: '20.04.2'
+        output: '20.04'
+
+      - input:
+          os_dist: 'Sonoma'
+          os_version: '23.0.1'
+        output: '23.0.1'

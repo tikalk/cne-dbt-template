@@ -1,0 +1,81 @@
+# dbt compiled files
+/target/
+/dbt_packages/
+/logs/
+/dbt_modules/
+
+edr_target/
+
+.user.yml
+.env
+.env.bak
+
+# snowflake pkey
+*.p8
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# VSCode
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/PythonSettings.json
+!.vscode/python.code-snippets
+*.codeworkspace
+.history/
+
+# IntelliJ / PyCharm
+.idea
+.idea/*
+.run/*
+
+
+# Python
+__pycache__/
+.pytest_cache
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+.installed.cfg
+*.swp
+MANIFEST
+.venv
+*.python-version
+
+# Python Testing
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+
+
+### Taskfiles
+.task/checksum/*
+
+
+# Jupyter notebooks
+.ipynb_checkpoints
+notebooks/playground/*
+!notebooks/playground/.gitkeep
+
+logs/
+.qodo

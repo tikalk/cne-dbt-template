@@ -1,0 +1,17 @@
+version: 2
+
+macros:
+  - name: get_os_dist
+    description: >
+      A macro that categorizes operating system versions into specific OS distributions 
+      for Windows, macOS, and Linux.
+    arguments:
+      - name: platform_name
+        type: string
+        description: >
+          The high-level OS platform name (e.g., 'Windows', 'macOS', 'Linux').
+      - name: os_version
+        type: string
+        description: >
+          The raw OS version string, which is matched using regex patterns to determine 
+          the appropriate OS distribution.

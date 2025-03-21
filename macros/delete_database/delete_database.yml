@@ -1,0 +1,9 @@
+version: 2
+
+macros:
+  - name: delete_database
+    description: Delete snowflake database
+    arguments:
+      - name: database_name
+        type: string
+        description: Name of database to delete

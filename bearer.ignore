@@ -1,0 +1,19 @@
+{
+  "c0ad2024c4f0c04e04c852704fb7aa08_0": {
+    "author": "Chaim Turkel",
+    "comment": "Add security checks, but task name needs to be sent to command",
+    "false_positive": true,
+    "ignored_at": "2025-03-03T10:22:37Z"
+  },
+  "e8d0a46057b2d5260f0824475f5aa734_0": {
+    "author": "Chaim Turkel",
+    "comment": "cannot double quote params",
+    "false_positive": true,
+    "ignored_at": "2025-03-04T10:02:01Z"
+  },
+  "e8d0a46057b2d5260f0824475f5aa734_1": {
+    "author": "shirel lugasi",
+    "false_positive": true,
+    "ignored_at": "2025-03-11T20:58:39Z"
+  }
+}

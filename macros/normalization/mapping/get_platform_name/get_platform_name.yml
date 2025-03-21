@@ -1,0 +1,14 @@
+version: 2
+
+macros:
+  - name: get_platform_name
+    description: >
+      A macro that maps standardized OS type labels to user-friendly platform names. 
+      This ensures consistency in platform naming across datasets.
+    arguments:
+      - name: os_type
+        type: string
+        description: >
+          The column or value representing the standardized OS type. 
+          Expected values include 'OS_WINDOWS', 'OS_MACOS', 'OS_LINUX', and 'OS_EMBEDDED'. 
+          Any other value returns NULL.

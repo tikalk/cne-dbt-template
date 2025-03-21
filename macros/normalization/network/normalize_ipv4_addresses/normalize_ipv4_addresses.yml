@@ -1,0 +1,34 @@
+version: 2
+
+macros:
+  - name: normalize_ipv4_addresses
+    description: |
+      This macro normalizes and validates IPv4 addresses. It checks if the given `ipv4_add` is a valid IPv4 address and falls within the following criteria:
+      1. The address must match the standard IPv4 format (x.x.x.x).
+      2. The address must not belong to reserved IP ranges such as:
+        - Loopback (`127.0.0.0/8`)
+        - Link-local (`169.254.0.0/16`)
+        - Multicast (`224.0.0.0/4`)
+
+    arguments:
+      - name: ipv4_add
+        description: |
+          The IPv4 address to be validated and normalized.
+        type: string
+
+    returns: string
+    examples:
+      - input: '192.168.1.1'
+        output: '192.168.1.1'
+
+      - input: '127.0.0.1'
+        output: null
+
+      - input: '169.254.0.1'
+        output: null
+
+      - input: '224.0.0.1'
+        output: null
+
+      - input: '255.255.255.255'
+        output: '255.255.255.255'

@@ -1,0 +1,53 @@
+version: 2
+
+macros:
+  - name: get_attributes
+    description: |
+      This macro determines the system attributes based on the operating system type, endpoint type, system product name, and internet exposure.
+      - If the `os_type` is not 'Linux' and the `endpoint_type` is not null, the macro maps the endpoint type to the appropriate system attribute such as 'SERVER', 'WORKSTATION', or 'INTERNET_FACING'.
+      - If the `os_type` is 'Windows' and the `system_product_name` indicates a virtual machine (using a regular expression to match VMware, VirtualBox, QEMU, or Parallels), it returns 'WORKSTATION'.
+      - If the `internet_exposure` is 'Yes', it returns 'INTERNET_FACING'.
+
+    arguments:
+      - name: os_type
+        description: |
+          The operating system type, which determines how the macro evaluates certain conditions (e.g., 'OS_WINDOWS', 'OS_LINUX').
+        type: string
+
+      - name: endpoint_type
+        description: |
+          The type of endpoint (e.g., 'Server', 'Workstation', 'Virtual'). Used to determine the system's classification.
+        type: string
+
+      - name: system_product_name
+        description: |
+          The product name of the system (e.g., 'vmware', 'vbox', 'qemu', 'parallels'). Used to check if the system is a virtual machine.
+        type: string
+
+      - name: internet_exposure
+        description: |
+          Indicates whether the system is exposed to the internet ('Yes' or 'No'). If 'Yes', the system is marked as 'INTERNET_FACING'.
+        type: string
+
+    returns: string
+    examples:
+      - input:
+          os_type: 'OS_WINDOWS'
+          endpoint_type: 'Server'
+          system_product_name: 'vmware'
+          internet_exposure: 'No'
+        output: 'SERVER'
+
+      - input:
+          os_type: 'OS_LINUX'
+          endpoint_type: 'Workstation'
+          system_product_name: 'parallels'
+          internet_exposure: 'Yes'
+        output: 'INTERNET_FACING'
+
+      - input:
+          os_type: 'OS_WINDOWS'
+          endpoint_type: null
+          system_product_name: 'vbox'
+          internet_exposure: 'Yes'
+        output: 'INTERNET_FACING'

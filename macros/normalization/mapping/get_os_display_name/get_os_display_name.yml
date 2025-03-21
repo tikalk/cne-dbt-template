@@ -1,0 +1,46 @@
+version: 2
+
+macros:
+  - name: get_os_display_name
+    description: |
+      This macro returns the display name of an operating system based on the platform name, distribution, and version.
+      - If the platform is `Linux`, it combines the distribution name and version.
+      - If the platform is not `Linux`, it simply returns the distribution name or platform name.
+      - If no distribution is provided, the platform name is returned as the display name.
+
+    arguments:
+      - name: platform_name
+        description: |
+          The name of the platform (e.g., "Linux", "Windows", "macOS"). If the platform is not Linux, the distribution name is returned.
+        type: string
+
+      - name: os_dist
+        description: |
+          The operating system distribution (e.g., "Ubuntu", "CentOS", "SLES", etc.). Used to build the display name.
+          If the platform is Linux, the distribution name and version will be included in the display name.
+        type: string
+
+      - name: os_version
+        description: |
+          The version of the operating system (e.g., "20.04", "8.2"). Used to append the version information to the distribution name for Linux platforms.
+        type: string
+
+    returns: string
+    examples:
+      - input:
+          platform_name: 'Linux'
+          os_dist: 'Ubuntu'
+          os_version: '20.04'
+        output: 'Ubuntu 20.04'
+
+      - input:
+          platform_name: 'macOS'
+          os_dist: 'Catalina'
+          os_version: '10.15'
+        output: 'Catalina'
+
+      - input:
+          platform_name: 'Windows'
+          os_dist: null
+          os_version: null
+        output: 'Windows'
