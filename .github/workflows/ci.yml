@@ -64,7 +64,8 @@ jobs:
 
       - name: Run File Validation
         env:
-          DBT_PROFILE_TYPE: ${{ vars.DBT_PROFILE_TYPE }}
+          DBT_PROFILE_TYPE: ${{ vars.DBT_PROFILE_TYPE }}          
+          DBT_PROFILE_PROJECT: ${{ vars.DBT_PROFILE_PROJECT }}
           DBT_PROFILE_PROJECT_ID: ${{ vars.DBT_PROFILE_PROJECT_ID }}
           DBT_PROFILE_PRIVATE_KEY_ID: ${{ vars.DBT_PROFILE_PRIVATE_KEY_ID }}
           DBT_PROFILE_PRIVATE_KEY: ${{ vars.DBT_PROFILE_PRIVATE_KEY }}
