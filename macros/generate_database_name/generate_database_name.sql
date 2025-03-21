@@ -3,7 +3,7 @@
     {%- set staging_extension = var('staging_extension','_stg') -%}    
 
     {%- set default_database = target.database -%}    
-    {%- if node  and node["package_name"] == "apex_dbt" -%}
+    {%- if node  and node["package_name"] == "tikal_dbt" -%}
         {%- if "gold" in node["fqn"] -%}
             {% set modified_database = default_database ~ marts_extension %}            
         {%- elif "silver" in node["fqn"] -%}

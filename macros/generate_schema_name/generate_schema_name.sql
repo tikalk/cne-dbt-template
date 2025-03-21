@@ -4,7 +4,7 @@
         {% set dir_path = node["path"].split('/') %}
         {% set model_type = dir_path[1] %}
         
-        {%- if node["package_name"]=="apex_dbt" -%}
+        {%- if node["package_name"]=="tikal_dbt" -%}
             {% set domain = node["fqn"][1] %}
             {%- if staging_fqn in node["fqn"] -%}
                 {% set position = node["fqn"].index(staging_fqn)-1 %}

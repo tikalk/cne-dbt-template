@@ -14,4 +14,4 @@ groups:
     owner:
       email: {{ cookiecutter.domain_name }}@nagomisecurity.com
       slack: ask-engine
-      github: apex-dbt
+      github: tikal-dbt

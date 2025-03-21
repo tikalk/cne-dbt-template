@@ -1,7 +1,7 @@
-name: "apex_dbt"
+name: "tikal_dbt"
 version: "1.0.0"
 config-version: 2
-profile: "apex"
+profile: "tikal_dbt"
 test-paths: ["tests"]
 snapshot-paths: ["snapshots"]
 
@@ -13,7 +13,7 @@ clean-targets:
 dispatch:
   - macro_namespace: dbt
     search_order:
-      - apex_dbt
+      - tikal_dbt
       # - dbt_snowflake_query_tags
       - dbt
 
@@ -48,7 +48,7 @@ models:
     ## To disable elementary for dev, uncomment this:
     # enabled: "{{ target.name in ['prod','analytics'] }}"
 
-  apex_dbt:
+  tikal_dbt:
 
     metrics:
       +group: metrics

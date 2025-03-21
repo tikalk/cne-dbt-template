@@ -1,4 +1,4 @@
-# Apex DBT Project
+# DBT Project
 
 This DBT project is designed to be used in conjunction with Dagster as an orchestrator. Conceptually, DBT models map to Dagster Assets.
 
