@@ -14,12 +14,8 @@ dispatch:
   - macro_namespace: dbt
     search_order:
       - tikal_dbt
-      # - dbt_snowflake_query_tags
       - dbt
 
-# query-comment:
-#   comment: '{{ dbt_snowflake_query_tags.get_query_comment(node) }}'
-#   append: true # Snowflake removes prefixed comments.
 
   
 
@@ -35,10 +31,10 @@ vars:
   staging_table_part: "_slv"
 
 models:
-  dbt_snowflake_monitoring:
-    +schema: "snowflake_monitoring"
+  dbt_bigquery_monitoring:
+    +schema: "dbt_bigquery_monitoring"
     +tags:
-      - snowflake_monitoring
+      - bigquery_monitoring
 
   elementary:
     ## elementary models will be created in the schema '<your_schema>_elementary'
@@ -49,43 +45,6 @@ models:
     # enabled: "{{ target.name in ['prod','analytics'] }}"
 
   tikal_dbt:
-
-    metrics:
-      +group: metrics
-      +tags:
-        - metrics
-      silver:            
-        +tags:
-          - silver
-        +materialized: view
-      gold:            
-        +tags:
-          - gold
-        +materialized: table
-
-
-    tools:
-      +tags:
-        - tools
-      crowdstrike_falcon:
-        +group: crowdstrike_falcon
-        +tags:
-          - crowdstrike_falcon
-        silver:            
-          +materialized: view
-          +tags:
-            - silver
-        gold:            
-          +materialized: table
-          +tags:
-            - gold
-      okta:
-        +tags:
-          - okta
-        silver:            
-          +materialized: view
-        gold:            
-          +materialized: table
   
   #for incremental models
   +on_schema_change: "sync_all_columns"

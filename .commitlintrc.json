@@ -40,7 +40,8 @@
         "infra",
         "common",
         "dagster",
-        "snowflake"
+        "snowflake",
+        "bigquery"
       ]
     ]
   }

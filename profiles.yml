@@ -1,7 +1,7 @@
 tikal_dbt:
   target: "multi"
   outputs:
-    multi:
+    multi: 
       dataset: "{{ env_var('DATASET_PREFIX') }}"
       job_execution_timeout_seconds: 300
       job_retries: 1

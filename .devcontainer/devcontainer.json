@@ -22,7 +22,6 @@
     "redhat.vscode-yaml", // YAML support
     "EditorConfig.EditorConfig", // For consistent editor settings
     "ms-azuretools.vscode-docker",
-    "snowflake.snowflake-sql",
     "mtxr.sqltools",
     "mtxr.sqltools-driver-pg"
   ],
