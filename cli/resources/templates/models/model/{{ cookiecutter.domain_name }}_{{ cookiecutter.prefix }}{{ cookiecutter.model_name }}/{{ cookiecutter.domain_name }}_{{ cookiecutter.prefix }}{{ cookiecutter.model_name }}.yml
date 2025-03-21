@@ -1,0 +1,6 @@
+models:
+  - name: {{ cookiecutter.full_model_name }}
+    description: This table contains the {{ cookiecutter.model_name }} details
+    config:
+      cluster_by: [ 'org_id', 'job_id' ]
+    columns: []

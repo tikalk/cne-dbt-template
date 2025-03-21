@@ -1,0 +1,9 @@
+macros:
+  - name: {{ cookiecutter.macro_name }}
+    description: This macro contains the {{ cookiecutter.macro_name }} details
+    arguments:
+      - name: [param name]
+        type: [param type]
+        description: [param desc]
+
+version: 2
