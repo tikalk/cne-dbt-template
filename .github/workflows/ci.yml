@@ -86,7 +86,6 @@ jobs:
           DBT_PROFILE_LOCATION: "europe-central2"
         run: |
           source .venv/bin/activate        
-          env  
           dbt deps
           dbt parse
           pre-commit run --all-files
