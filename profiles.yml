@@ -1,24 +1,10 @@
 tikal_dbt:
-  target: "multi"
+  target: dev
   outputs:
-    multi: 
-      dataset: "{{ env_var('DATASET_PREFIX') }}"
-      job_execution_timeout_seconds: 300
-      job_retries: 1
-      priority: interactive
-      project: "{{ env_var('DBT_PROFILE_PROJECT') }}"
-      location: "{{ env_var('DBT_PROFILE_LOCATION', 'eu') }}"
-      threads: 4
+    dev:
       type: bigquery
-      method: service-account-json
-      keyfile_json:
-        type: "{{ env_var('DBT_PROFILE_TYPE') }}"
-        project_id: "{{ env_var('DBT_PROFILE_PROJECT_ID') }}"
-        private_key_id: "{{ env_var('DBT_PROFILE_PRIVATE_KEY_ID') }}"
-        private_key: "{{ env_var('DBT_PROFILE_PRIVATE_KEY') }}"
-        client_email: "{{ env_var('DBT_PROFILE_CLIENT_EMAIL') }}"
-        client_id: "{{ env_var('DBT_PROFILE_CLIENT_ID') }}"
-        auth_uri: "{{ env_var('DBT_PROFILE_AUTH_URI') }}"
-        token_uri: "{{ env_var('DBT_PROFILE_TOKEN_URI') }}"
-        auth_provider_x509_cert_url: "{{ env_var('DBT_PROFILE_AUTH_PROVIDER_CERT_URL') }}"
-        client_x509_cert_url: "{{ env_var('DBT_PROFILE_CLIENT_CERT_URL') }}"
+      project: "{{ env_var('DBT_PROFILE_PROJECT') }}"
+      schema: "{{ env_var('BIGQUERY_SCHEMA', 'DATASET_PREFIX') }}_DWH"
+      threads: 4 # Must be a value of 1 or greater
+      method: service-account
+      keyfile: "{{ env_var('BIGQUERY_KEYFILE_PATH', '.keys/dev.json') }}"

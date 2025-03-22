@@ -2,7 +2,7 @@ version: '3'
 
 
 env:
-  DBT_PROFILE: "multi"
+  DBT_PROFILE: "dev"
   DBT_TARGET: "staging"
   DBT_PROJECT_DIR: "."
   DBT_STAGING_EXTENSION: "_STAGING"

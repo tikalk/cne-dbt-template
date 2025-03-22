@@ -19,6 +19,13 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
+      - name: Write BIGQUERY_KEYFILE_JSON to File
+        env:
+          BIGQUERY_KEYFILE_JSON_BASE64: ${{ secrets.BIGQUERY_KEYFILE_JSON_BASE64 }}
+        run: |
+          echo "$BIGQUERY_KEYFILE_JSON_BASE64" | base64 --decode > /tmp/bigquery-keyfile.json
+          echo "BIGQUERY_KEYFILE_PATH=/tmp/bigquery-keyfile.json" >> $GITHUB_ENV
+  
       - name: Calc dataset name
         run: |        
           echo "github_ref: ${{ github.ref }}"
@@ -47,12 +54,12 @@ jobs:
           uv sync
           uv pip install -e .
 
-      - name: Write rsa_key to file
-        env:
-          SNOWFLAKE_PRIVATE_KEY_DATA: ${{ secrets.SNOWFLAKE_PRIVATE_KEY_DATA }}
-        run: |
-          echo "$SNOWFLAKE_PRIVATE_KEY_DATA" > /tmp/rsa_key.p8
-          echo "SNOWFLAKE_PRIVATE_KEY_PATH=/tmp/rsa_key.p8" >> $GITHUB_ENV
+      # - name: Write rsa_key to file
+      #   env:
+      #     SNOWFLAKE_PRIVATE_KEY_DATA: ${{ secrets.SNOWFLAKE_PRIVATE_KEY_DATA }}
+      #   run: |
+      #     echo "$SNOWFLAKE_PRIVATE_KEY_DATA" > /tmp/rsa_key.p8
+      #     echo "SNOWFLAKE_PRIVATE_KEY_PATH=/tmp/rsa_key.p8" >> $GITHUB_ENV
 
 
       # - uses: robinraju/release-downloader@v1

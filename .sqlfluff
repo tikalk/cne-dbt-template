@@ -10,7 +10,7 @@ encoding = utf-8
 [sqlfluff:templater:dbt]
 project_dir = .
 profiles_dir = .
-profile = multi
+profile = dev
 target = staging
 
 
