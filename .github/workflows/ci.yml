@@ -72,7 +72,8 @@ jobs:
       - name: Run File Validation
         env:
           DATASET_PREFIX: "CI_"
-          DBT_PROFILE_LOCATION: "europe-central2"
+          DBT_PROFILE_PROJECT: ${{ vars.DBT_PROFILE_PROJECT }}
+
         run: |
           source .venv/bin/activate        
           dbt deps
@@ -83,6 +84,8 @@ jobs:
       - name: Run DBT
         if: (github.event_name == 'push') || (github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize'))
         env:
+          DBT_PROFILE_PROJECT: ${{ vars.DBT_PROFILE_PROJECT }}
+
           DATASET_PREFIX: "CI_"
           DBT_SCHEMA: "CI_DWH"
         run: |
@@ -103,6 +106,8 @@ jobs:
         if: (github.event_name == 'push')
         env:
           DATASET_PREFIX: "CI_"
+          DBT_PROFILE_PROJECT: ${{ vars.DBT_PROFILE_PROJECT }}
+
         run: |
           source .venv/bin/activate          
           dbt docs generate --static
@@ -157,6 +162,8 @@ jobs:
         if:  (github.event.action == 'closed' || github.ref == 'refs/heads/main')
         env:
           DATASET_PREFIX: "CI_"
+          DBT_PROFILE_PROJECT: ${{ vars.DBT_PROFILE_PROJECT }}
+
         run: |
             source .venv/bin/activate          
             dbt deps
