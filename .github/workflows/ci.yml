@@ -88,11 +88,13 @@ jobs:
 
           DATASET_PREFIX: "CI_"
           DBT_SCHEMA: "CI_DWH"
+          DBT_PROFILE_PROJECT : ${{ secrets.DBT_PROFILE_PROJECT }}
         run: |
           source .venv/bin/activate      
           dbt deps          
           dbt debug --debug
-          dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}}"
+          dbt run-operation create_database --args '{project_id: ${DBT_PROFILE_PROJECT}, dataset_name: ${DBT_SCHEMA}}'
+          dbt run-operation create_database --args "{database_name: ${DBT_PROFILE_PROJECT}.${DBT_SCHEMA}}"
           dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}_GOLD}"
           dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}_SILVER}"
           dbt build --exclude dbt_snowflake_monitoring --exclude elementary

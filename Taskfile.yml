@@ -93,25 +93,4 @@ tasks:
         fi
 
 
-  view-env:
-    desc: View the environment
-    cmds:
-      - task: check-env
-        vars: {VAR_NAME: "SNOWFLAKE_ACCOUNT"}          
-      - task: check-env
-        vars: {VAR_NAME: "SNOWFLAKE_DATABASE"}
-      - task: check-env
-        vars: {VAR_NAME: "SNOWFLAKE_WAREHOUSE"}          
-      - task: check-env
-        vars: {VAR_NAME: "SNOWFLAKE_PRIVATE_KEY_PATH"}          
-      - task: check-env
-        vars: {VAR_NAME: "SNOWFLAKE_ROLE"}          
-      - task: check-env
-        vars: {VAR_NAME: "SNOWFLAKE_USERNAME"}
-          
-  validate-env:
-    desc: "Fail if any required environment variables are missing"
-    cmds:
-      - task: view-env
-    status:
-      - '[ -n "$SNOWFLAKE_ACCOUNT" ] && [ -n "$SNOWFLAKE_DATABASE" ] && [ -n "$SNOWFLAKE_WAREHOUSE" ] && [ -n "$SNOWFLAKE_PRIVATE_KEY_PATH" ] && [ -n "$SNOWFLAKE_ROLE" ] && [ -n "$SNOWFLAKE_USERNAME" ]'
+
