@@ -17,12 +17,12 @@ dependencies = [
     "dbt-core==1.9.3",
     "dotenv==0.9.9",
     "elementary-data[bigquery]==0.16.2",
+    "google-cloud-bigquery>=3.30.0",
     "pyyaml==6.0.2",
     "rich-click==1.8.6",
     "singleton-decorator>=1.0.0",
     "snowflake-connector-python==3.13.2",
     "snowflake-snowpark-python>=1.28.0",
-
 ]
 
 [dependency-groups]

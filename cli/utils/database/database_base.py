@@ -10,7 +10,7 @@ from cli.const.const_model import ModelType
 class DatabaseBase(ABC):
     column_order = ["name", "description", "type"]  # Adjust based on your preference
 
-    def get_table_definition(self, sf_private_key_path, sf_account, sf_user, sf_warehouse, sf_database, sf_schema, table_name):
+    def get_table_definition(self, private_key_path, account, user, warehouse, database, schema, table_name):
         pass
 
     # Function to update the DBT model's YAML file with the new columns
@@ -70,5 +70,5 @@ class DatabaseBase(ABC):
         with open(yml_file_path, "w") as file:
             yaml.dump(yml_data, file, default_flow_style=False, sort_keys=False)
 
-    def select_from_table(self, sf_private_key_path, sf_account, sf_user, sf_warehouse, sf_database, sf_schema, table_name: str, columns: list):
+    def select_from_table(self, private_key_path, account, user, warehouse, database, schema, table_name: str, columns: list):
         pass

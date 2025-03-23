@@ -97,8 +97,6 @@ class ModelType(SuperEnum):
             return ModelType.STAGING  # type: ignore
         elif lower_label in [gold_custom_name, ModelType.GOLD.name.lower(), ModelType.GOLD.value.lower(), ModelType.GOLD.to_str().lower()]:  # type: ignore
             return ModelType.GOLD  # type: ignore
-        # elif lower_label in [gold_custom_name, ModelType.GOLD.name.lower(), ModelType.GOLD.value.lower(), ModelType.GOLD.to_str().lower()]:  # type: ignore
-        #     return ModelType.GOLD  # type: ignore
         else:
             return None
 
