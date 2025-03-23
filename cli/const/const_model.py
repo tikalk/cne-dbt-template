@@ -52,9 +52,26 @@ class ModelType(SuperEnum):
             case _:
                 raise ValueError(f"Unknown model type: {self.name}")
 
+    def get_title_name(self):
+        match self:
+            case ModelType.SOURCE:
+                return ini_config.get("model", "SOURCE_TITLE", fallback=self.value)
+            case ModelType.BASE:
+                return ini_config.get("model", "BASE_TITLE", fallback=self.value)
+            case ModelType.STAGING:
+                return ini_config.get("model", "STAGING_TITLE", fallback=self.value)
+            case ModelType.GOLD:
+                return ini_config.get("model", "MARTS_TITLE", fallback=self.value)
+            case _:
+                raise ValueError(f"Unknown model type: {self.name}")
+
+    def to_str(self) -> str:
+        get_title_name = self.get_title_name()
+        return f"Model - {get_title_name}"
+
     @staticmethod
     def get_valid_types():
-        return [model_type.value for model_type in ModelType.get_model_valid_types()]
+        return [model_type.to_str() for model_type in ModelType.get_model_valid_types()]
 
     @staticmethod
     def get_model_valid_types():
@@ -72,16 +89,16 @@ class ModelType(SuperEnum):
         staging_custom_name = ini_config.get("model", "STAGING_LAYER", fallback="source")
         gold_custom_name = ini_config.get("model", "MARTS_LAYER", fallback="source")
 
-        if lower_label in [source_custom_name, ModelType.SOURCE.name.lower(), ModelType.SOURCE.value.lower()]:  # type: ignore
+        if lower_label in [source_custom_name, ModelType.SOURCE.name.lower(), ModelType.SOURCE.value.lower(), ModelType.SOURCE.to_str().lower()]:  # type: ignore
             return ModelType.SOURCE  # type: ignore
-        elif lower_label in [base_custom_name, ModelType.BASE.name.lower(), ModelType.BASE.value.lower()]:  # type: ignore
+        elif lower_label in [base_custom_name, ModelType.BASE.name.lower(), ModelType.BASE.value.lower(), ModelType.BASE.to_str().lower()]:  # type: ignore
             return ModelType.BASE  # type: ignore
-        elif lower_label in [staging_custom_name, ModelType.STAGING.name.lower(), ModelType.STAGING.value.lower()]:  # type: ignore
+        elif lower_label in [staging_custom_name, ModelType.STAGING.name.lower(), ModelType.STAGING.value.lower(), ModelType.STAGING.to_str().lower()]:  # type: ignore
             return ModelType.STAGING  # type: ignore
-        elif lower_label in [ModelType.GOLD.name.lower(), ModelType.GOLD.value.lower()]:  # type: ignore
+        elif lower_label in [gold_custom_name, ModelType.GOLD.name.lower(), ModelType.GOLD.value.lower(), ModelType.GOLD.to_str().lower()]:  # type: ignore
             return ModelType.GOLD  # type: ignore
-        elif lower_label in [gold_custom_name, ModelType.EXPOSURES.name.lower(), ModelType.EXPOSURES.value.lower()]:  # type: ignore
-            return ModelType.EXPOSURES  # type: ignore
+        # elif lower_label in [gold_custom_name, ModelType.GOLD.name.lower(), ModelType.GOLD.value.lower(), ModelType.GOLD.to_str().lower()]:  # type: ignore
+        #     return ModelType.GOLD  # type: ignore
         else:
             return None
 

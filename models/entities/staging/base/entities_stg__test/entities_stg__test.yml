@@ -1,6 +1,0 @@
-models:
-  - name: entities_stg__test
-    description: This table contains the test details
-    config:
-      cluster_by: [ 'org_id', 'job_id' ]
-    columns: []
