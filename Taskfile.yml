@@ -91,6 +91,3 @@ tasks:
         else
           echo "{{.VAR_NAME}} = ${{.VAR_NAME}}"
         fi
-
-
-

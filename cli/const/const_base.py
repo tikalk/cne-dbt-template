@@ -19,4 +19,3 @@ class SuperEnum(Enum):
 
     def __str__(self):
         return self.value.capitalize()
-
