@@ -1,0 +1,6 @@
+models:
+  - name: users_stg__all_users
+    description: This table contains the all_users details
+    config:
+      cluster_by: [ 'org_id', 'job_id' ]
+    columns: []

@@ -12,10 +12,6 @@ class DatabaseBase(ABC):
 
     def get_table_definition(
         self,
-        private_key_path: str | None,
-        account: str | None,
-        user: str | None,
-        warehouse: str | None,
         database: str | None,
         schema: str | None,
         table_name: str | None,

@@ -91,22 +91,6 @@ def start():
 def tasks_callback(task_name: str):
     if task_name in ["dbt:run-slim", "dbt:run"]:
 
-        key_path: str = ""
-        account: str = ""
-        user: str = ""
-        database: str = ""
-        if ini_config.get("dbt", "database_type", fallback="SNOWFLAKE") == "SNOWFLAKE":
-            key_path: str = os.environ.get("SNOWFLAKE_PRIVATE_KEY_PATH", "")
-            account: str = os.environ.get("SNOWFLAKE_ACCOUNT", "")
-            user: str = os.environ.get("SNOWFLAKE_USERNAME", "")
-            database: str = os.environ.get("SNOWFLAKE_WAREHOUSE", "")
-
-        elif ini_config.get("dbt", "database_type", fallback="SNOWFLAKE") == "BIGQUERY":
-            key_path: str = os.environ.get("BIGQUERY_KEYFILE_PATH", "")
-            account: str = os.environ.get("SNOWFLAKE_ACCOUNT", "")
-            user: str = os.environ.get("SNOWFLAKE_USERNAME", "")
-            database: str = os.environ.get("SNOWFLAKE_WAREHOUSE", "")
-
         base_custom_name = ModelType.get_model_prefix(ModelType.BASE)
         staging_custom_name = ModelType.get_model_prefix(ModelType.STAGING)
 
@@ -127,10 +111,6 @@ def tasks_callback(task_name: str):
                         node = manifest_obj.nodes[unique_id]
 
                         column_definitions = database.get_table_definition(
-                            key_path,
-                            account,
-                            user,
-                            database,
                             node.database,
                             node.schema_,
                             node.name.replace(f"_{staging_custom_name}", "").replace(f"_{base_custom_name}", ""),

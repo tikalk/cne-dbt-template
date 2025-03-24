@@ -1,0 +1,6 @@
+models:
+  - name: users_stg__user_cast
+    description: This table contains the user_cast details
+    config:
+      cluster_by: [ 'org_id', 'job_id' ]
+    columns: []

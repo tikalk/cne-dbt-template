@@ -1,4 +1,5 @@
 import logging
+import os
 
 import click
 import snowflake.connector
@@ -12,11 +13,16 @@ logger = logging.getLogger(__name__)
 
 
 class SnowflakeDB(DatabaseBase):
+    def __init__(self):
+        self.key_path: str = os.environ.get("SNOWFLAKE_PRIVATE_KEY_PATH", "")
+        self.account: str = os.environ.get("SNOWFLAKE_ACCOUNT", "")
+        self.user: str = os.environ.get("SNOWFLAKE_USERNAME", "")
+        self.warehouse: str = os.environ.get("SNOWFLAKE_WAREHOUSE", "")
 
     # Function to connect to Snowflake and fetch the table definition
-    def get_table_definition(self, private_key_path: str, account: str, user: str, warehouse: str, database: str, schema, table_name: str):
+    def get_table_definition(self,  database: str, schema: str, table_name: str):
         conn = snowflake.connector.connect(
-            private_key_file=private_key_path, user=user, account=account, warehouse=warehouse, database=database, schema=schema
+            private_key_file=self.key_path, user=self.user, account=self.account, warehouse=self.warehouse, database=database, schema=schema
         )
 
         try:
@@ -34,10 +40,10 @@ class SnowflakeDB(DatabaseBase):
         return {col[0]: col[1] for col in columns}
 
     def select_from_table(
-        self, private_key_path: str, account: str, user: str, warehouse: str, database: str, schema: str, table_name: str, columns: list
+        self, database: str, schema: str, table_name: str, columns: list
     ):
         conn = snowflake.connector.connect(
-            private_key_file=private_key_path, user=user, account=account, warehouse=warehouse, database=database, schema=schema
+            self.key_path, user=self.user, account=self.account, warehouse=self.warehouse, database=database, schema=schema
         )
         formatted_string = ", ".join(f'"{col}"' for col in columns)
         query = f"SELECT {formatted_string} FROM {database}.{schema}.{table_name}"

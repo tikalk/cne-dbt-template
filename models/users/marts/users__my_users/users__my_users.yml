@@ -1,0 +1,6 @@
+models:
+  - name: users__my_users
+    description: This table contains the my_users details
+    config:
+      cluster_by: [ 'org_id', 'job_id' ]
+    columns: []
