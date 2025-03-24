@@ -91,6 +91,10 @@ def start():
 def tasks_callback(task_name: str):
     if task_name in ["dbt:run-slim", "dbt:run"]:
 
+        key_path: str = ""
+        account: str = ""
+        user: str = ""
+        database: str = ""
         if ini_config.get("dbt", "database_type", fallback="SNOWFLAKE") == "SNOWFLAKE":
             key_path: str = os.environ.get("SNOWFLAKE_PRIVATE_KEY_PATH", "")
             account: str = os.environ.get("SNOWFLAKE_ACCOUNT", "")
