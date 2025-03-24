@@ -566,7 +566,7 @@ wheels = [
 
 [[package]]
 name = "dbt-core"
-version = "1.9.2"
+version = "1.9.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "agate" },
@@ -589,9 +589,9 @@ dependencies = [
     { name = "sqlparse" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/5d/51/3d5a088f336f7b4942ec265d18d8b3cf4cb371664e43663777f51a589a75/dbt_core-1.9.2.tar.gz", hash = "sha256:c1f2d9cad44c17c366141da2613d07804497d9b063d0045ae57c758743d3b32d", size = 865966 }
+sdist = { url = "https://files.pythonhosted.org/packages/d2/df/44e62ac9525c3de15cca87822517252f2b5ff37edc46f734c148254608a4/dbt_core-1.9.3.tar.gz", hash = "sha256:f02aa336721e7ff7beae86b8269d0c81290e36aa1126dc6d7b52c327de8c94af", size = 867021 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/5a/c6/157d0ff82f32641a6918a39ea99cce24e8fa5c05b98753d42d18070a36e6/dbt_core-1.9.2-py3-none-any.whl", hash = "sha256:9da00a336910c3279e4deb34febef9ebd7eed847cf8a20452df0439518eb8188", size = 944919 },
+    { url = "https://files.pythonhosted.org/packages/af/4d/7d9204669bbe90b8e9666893ef9267535082a9f66e6a060ea2b701e1f01c/dbt_core-1.9.3-py3-none-any.whl", hash = "sha256:cd1c7d379f43f8c7914798041bf5062af0070261dabb148775d77c62733bc5e5", size = 946057 },
 ]
 
 [[package]]
@@ -686,7 +686,7 @@ wheels = [
 
 [[package]]
 name = "elementary-data"
-version = "0.16.2"
+version = "0.18.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "alive-progress" },
@@ -701,7 +701,6 @@ dependencies = [
     { name = "packaging" },
     { name = "posthog" },
     { name = "pydantic" },
-    { name = "pyfiglet" },
     { name = "pymsteams" },
     { name = "pytz" },
     { name = "ratelimit" },
@@ -710,9 +709,9 @@ dependencies = [
     { name = "slack-sdk" },
     { name = "tabulate" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/10/a2/78a09af7362e7900b6b77f6f01d92cbadb6fa3f7172b86b50259f9f6099a/elementary_data-0.16.2.tar.gz", hash = "sha256:731849eb3675df5dbc87e7992cccc267012ef43913e6f9d8c123ff43c4998dd1", size = 1117206 }
+sdist = { url = "https://files.pythonhosted.org/packages/68/ae/1ff7f1a9bd8573710f0469b819ed9ac5f1832675c48ab1df75e27bb44f93/elementary_data-0.18.0.tar.gz", hash = "sha256:d03a552859ad9efc3ae1171162fc7e9207ad6b6666e91fcff6063ce458cea1c8", size = 1127425 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2e/b3/04a58ee2493365cd6c275e6a7c1d24b35cb5a7aa2086d4854f7078e7dfbd/elementary_data-0.16.2-py3-none-any.whl", hash = "sha256:f847701efc6a99bcee9ee81f82471aa11537c315a730477266b785e2ebc164eb", size = 1191252 },
+    { url = "https://files.pythonhosted.org/packages/05/11/6c5a6ba50f8c64ef781926f042aacdb14b9b26d1cb74d78c594690c31d95/elementary_data-0.18.0-py3-none-any.whl", hash = "sha256:9c47a2b1818095ec961392ccf7ea5c547f75ed865aac0fb90469b8f142e39556", size = 1208803 },
 ]
 
 [package.optional-dependencies]
@@ -1554,15 +1553,6 @@ wheels = [
 ]
 
 [[package]]
-name = "pyfiglet"
-version = "0.8.post1"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/f9/02/48293654fb2e4fdeb4d927f00a380230a832744b6c9af757373a72d018d1/pyfiglet-0.8.post1.tar.gz", hash = "sha256:c6c2321755d09267b438ec7b936825a4910fec696292139e664ca8670e103639", size = 634618 }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/33/07/fcfdd7a2872f5b348953de35acce1544dab0c1e8368dca54279b1cde5c15/pyfiglet-0.8.post1-py2.py3-none-any.whl", hash = "sha256:d555bcea17fbeaf70eaefa48bb119352487e629c9b56f30f383e2c62dd67a01c", size = 865831 },
-]
-
-[[package]]
 name = "pygments"
 version = "2.19.1"
 source = { registry = "https://pypi.org/simple" }
@@ -1822,16 +1812,16 @@ wheels = [
 
 [[package]]
 name = "rich-click"
-version = "1.8.6"
+version = "1.8.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "click" },
     { name = "rich" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/ea/e3/ff1c715b673ec9e01f4482d8d0edfd9adf891f3630d83e695b38337a3889/rich_click-1.8.6.tar.gz", hash = "sha256:8a2448fd80e3d4e16fcb3815bfbc19be9bae75c9bb6aedf637901e45f3555752", size = 38247 }
+sdist = { url = "https://files.pythonhosted.org/packages/a6/7a/4b78c5997f2a799a8c5c07f3b2145bbcda40115c4d35c76fbadd418a3c89/rich_click-1.8.8.tar.gz", hash = "sha256:547c618dea916620af05d4a6456da797fbde904c97901f44d2f32f89d85d6c84", size = 39066 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/7e/09/c20b04b6c9cf273995753f226ca51656e00f8a37f1e723f8c713b93b2ad4/rich_click-1.8.6-py3-none-any.whl", hash = "sha256:55fb571bad7d3d69ac43ca45f05b44616fd019616161b1815ff053567b9a8e22", size = 35076 },
+    { url = "https://files.pythonhosted.org/packages/fa/69/963f0bf44a654f6465bdb66fb5a91051b0d7af9f742b5bd7202607165036/rich_click-1.8.8-py3-none-any.whl", hash = "sha256:205aabd5a98e64ab2c105dee9e368be27480ba004c7dfa2accd0ed44f9f1550e", size = 35747 },
 ]
 
 [[package]]
@@ -2185,12 +2175,12 @@ requires-dist = [
     { name = "cookiecutter", specifier = "==2.6.0" },
     { name = "dbt-artifacts-parser", specifier = "==0.8.2" },
     { name = "dbt-bigquery", specifier = ">=1.9.1" },
-    { name = "dbt-core", specifier = "==1.9.2" },
+    { name = "dbt-core", specifier = "==1.9.3" },
     { name = "dotenv", specifier = "==0.9.9" },
-    { name = "elementary-data", extras = ["bigquery"], specifier = "==0.16.2" },
+    { name = "elementary-data", extras = ["bigquery"], specifier = "==0.18.0" },
     { name = "google-cloud-bigquery", specifier = ">=3.30.0" },
     { name = "pyyaml", specifier = "==6.0.2" },
-    { name = "rich-click", specifier = "==1.8.6" },
+    { name = "rich-click", specifier = "==1.8.8" },
     { name = "singleton-decorator", specifier = ">=1.0.0" },
     { name = "snowflake-connector-python", specifier = "==3.13.2" },
     { name = "snowflake-snowpark-python", specifier = ">=1.28.0" },
