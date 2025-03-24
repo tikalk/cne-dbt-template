@@ -51,6 +51,7 @@ jobs:
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           export PATH="$HOME/.local/bin:$PATH"
           uv venv
+          source .venv/bin/activate        
           uv sync
           uv pip install -e .
 
