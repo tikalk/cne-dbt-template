@@ -85,8 +85,6 @@ jobs:
       - name: Run DBT
         if: (github.event_name == 'push') || (github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize'))
         env:
-          DBT_PROFILE_PROJECT: ${{ vars.DBT_PROFILE_PROJECT }}
-
           DATASET_PREFIX: "CI_"
           DBT_SCHEMA: "CI_DWH"
           DBT_PROFILE_PROJECT : ${{ secrets.DBT_PROFILE_PROJECT }}
