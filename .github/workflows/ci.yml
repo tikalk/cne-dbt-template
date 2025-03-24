@@ -80,6 +80,7 @@ jobs:
         env:
           DATASET_PREFIX: "CI_"
           DBT_PROFILE_PROJECT: ${{ vars.DBT_PROFILE_PROJECT }}
+          BIGQUERY_DATABASE: ${{ vars.BIGQUERY_DATABASE }}        
 
         run: |
           source .venv/bin/activate        
