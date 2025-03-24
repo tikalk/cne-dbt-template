@@ -7,7 +7,6 @@ requires-python = ">=3.12"
 dependencies = [
     "click==8.1.8",
     "click-command-tree==1.2.0",
-    "click-completion==0.5.2",
     "click-plugins==1.1.1",
     "click-repl==0.3.0",
     "clickloader==0.2.0",

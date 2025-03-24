@@ -6,7 +6,6 @@ import sys
 import traceback
 
 import ccl
-import click_completion
 import rich_click as click
 from click_repl import repl
 from dbt_artifacts_parser.parser import parse_manifest_v12, parse_run_results_v6
@@ -160,7 +159,6 @@ def setup_commands():
 
     GoTasks().set_callback(tasks_callback)
     GoTasks().generate_go_tasks()
-    click_completion.init()
     cli.add_command(validate)
     cli.add_command(tasks)
 
