@@ -1,4 +1,4 @@
-from cli.const.const_model import ModelCode, ModelType
+from cli.const.const_model import ModelCode
 
 
 def test_model_code_get_valid_types():
@@ -16,9 +16,3 @@ def test_model_code_from_str():
 def test_model_code_to_extension():
     assert ModelCode.SQL.to_extension() == "sql"
     assert ModelCode.PYTHON.to_extension() == "py"
-
-
-
-
-
-
