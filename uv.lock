@@ -566,7 +566,7 @@ wheels = [
 
 [[package]]
 name = "dbt-core"
-version = "1.9.3"
+version = "1.9.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "agate" },
@@ -589,9 +589,9 @@ dependencies = [
     { name = "sqlparse" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d2/df/44e62ac9525c3de15cca87822517252f2b5ff37edc46f734c148254608a4/dbt_core-1.9.3.tar.gz", hash = "sha256:f02aa336721e7ff7beae86b8269d0c81290e36aa1126dc6d7b52c327de8c94af", size = 867021 }
+sdist = { url = "https://files.pythonhosted.org/packages/5d/51/3d5a088f336f7b4942ec265d18d8b3cf4cb371664e43663777f51a589a75/dbt_core-1.9.2.tar.gz", hash = "sha256:c1f2d9cad44c17c366141da2613d07804497d9b063d0045ae57c758743d3b32d", size = 865966 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/af/4d/7d9204669bbe90b8e9666893ef9267535082a9f66e6a060ea2b701e1f01c/dbt_core-1.9.3-py3-none-any.whl", hash = "sha256:cd1c7d379f43f8c7914798041bf5062af0070261dabb148775d77c62733bc5e5", size = 946057 },
+    { url = "https://files.pythonhosted.org/packages/5a/c6/157d0ff82f32641a6918a39ea99cce24e8fa5c05b98753d42d18070a36e6/dbt_core-1.9.2-py3-none-any.whl", hash = "sha256:9da00a336910c3279e4deb34febef9ebd7eed847cf8a20452df0439518eb8188", size = 944919 },
 ]
 
 [[package]]
@@ -2175,7 +2175,7 @@ requires-dist = [
     { name = "cookiecutter", specifier = "==2.6.0" },
     { name = "dbt-artifacts-parser", specifier = "==0.8.2" },
     { name = "dbt-bigquery", specifier = ">=1.9.1" },
-    { name = "dbt-core", specifier = "==1.9.3" },
+    { name = "dbt-core", specifier = "==1.9.2" },
     { name = "dotenv", specifier = "==0.9.9" },
     { name = "elementary-data", extras = ["bigquery"], specifier = "==0.18.0" },
     { name = "google-cloud-bigquery", specifier = ">=3.30.0" },
