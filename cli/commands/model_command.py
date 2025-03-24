@@ -3,7 +3,7 @@ import os
 import shutil
 from abc import ABC
 from typing import Optional
-
+from cli.config import ini_config
 from cookiecutter.exceptions import OutputDirExistsException
 from cookiecutter.main import cookiecutter
 from rich.prompt import Prompt
@@ -45,13 +45,18 @@ class ModelCommands(ABC):
         return ModelType.from_str(type)
 
     def get_model_type_by_dir(self, file_name_path: str) -> ModelType:
-        if "source" in file_name_path:
+        source_base_folder = ini_config.get("model", "SOURCE_FOLDER", fallback="silver/base")
+        staging_base_folder = ini_config.get("model", "STAGING_BASE_FOLDER", fallback="silver/base")
+        staging_compatible_folder = ini_config.get("model", "STAGING_COMPATIBLE_FOLDER", fallback="silver/staging")
+        gold_folder = ini_config.get("model", "MARTS_FOLDER", fallback="gold")
+        
+        if source_base_folder in file_name_path:
             return ModelType.SOURCE
-        if "silver/base" in file_name_path:
+        if staging_base_folder in file_name_path:
             return ModelType.BASE
-        if "silver/staging" in file_name_path:
+        if staging_compatible_folder in file_name_path:
             return ModelType.STAGING
-        if "gold" in file_name_path:
+        if gold_folder in file_name_path:
             return ModelType.GOLD
         raise ValueError(f"Unknown model type for file name path: {file_name_path}")
 

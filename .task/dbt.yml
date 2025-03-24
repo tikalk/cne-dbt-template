@@ -2,8 +2,8 @@ version: '3'
 
 
 env:
-  DBT_PROFILE: "dev"
-  DBT_TARGET: "staging"
+  DBT_PROFILE: "tikal_dbt"
+  DBT_TARGET: "dev"
   DBT_PROJECT_DIR: "."
   DBT_STAGING_EXTENSION: "_STAGING"
   DBT_MARTS_EXTENSION: "_MARTS"
@@ -224,10 +224,10 @@ tasks:
         vars:
           source_name: "SAAS_PROD_EU"    
 
-  set-source-local:
-    desc: Set DBT source to local schema
-    silent: true
-    cmds:
-      - task: set-source
-        vars:
-          source_name: "${SNOWFLAKE_DATABASE}"    
+  # set-source-local:
+  #   desc: Set DBT source to local schema
+  #   silent: true
+  #   cmds:
+  #     - task: set-source
+  #       vars:
+  #         source_name: "${SNOWFLAKE_DATABASE}"    

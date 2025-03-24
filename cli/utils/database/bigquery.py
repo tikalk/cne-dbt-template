@@ -27,12 +27,11 @@ class BigqueryDB(DatabaseBase):
             table = client.get_table(table_ref)
             # Get schema
             schema = table.schema
+            return {field.name: field.field_type for field in schema}
         except Exception as e:
             logger.error(f"An error occurred: {e}")
             raise e
 
-        # Return the columns as a dictionary
-        return {field.name: field.field_type for field in schema}
 
     def select_from_table(self, private_key_path, account, user, warehouse, database, schema, table_name: str, columns: list):
 
