@@ -19,11 +19,8 @@ class BigqueryDB(DatabaseBase):
         self.user: str = os.environ.get("BIGQUERY_USERNAME", "")
         self.database: str = os.environ.get("BIGQUERY_DATABASE", "")
 
-
     # Function to connect to Snowflake and fetch the table definition
-    def get_table_definition(self,  database: str | None,
-        schema: str | None,
-        table_name: str | None):
+    def get_table_definition(self, database: str | None, schema: str | None, table_name: str | None):
         credentials = service_account.Credentials.from_service_account_file(self.key_path)
 
         # Create BigQuery client
@@ -41,6 +38,6 @@ class BigqueryDB(DatabaseBase):
             logger.error(f"An error occurred: {e}")
             raise e
 
-    def select_from_table(self,  schema, table_name: str, columns: list):
+    def select_from_table(self, schema, table_name: str, columns: list):
 
         return None

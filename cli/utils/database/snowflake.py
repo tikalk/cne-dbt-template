@@ -20,7 +20,7 @@ class SnowflakeDB(DatabaseBase):
         self.warehouse: str = os.environ.get("SNOWFLAKE_WAREHOUSE", "")
 
     # Function to connect to Snowflake and fetch the table definition
-    def get_table_definition(self,  database: str, schema: str, table_name: str):
+    def get_table_definition(self, database: str, schema: str, table_name: str):
         conn = snowflake.connector.connect(
             private_key_file=self.key_path, user=self.user, account=self.account, warehouse=self.warehouse, database=database, schema=schema
         )
@@ -39,9 +39,7 @@ class SnowflakeDB(DatabaseBase):
         # Return the columns as a dictionary
         return {col[0]: col[1] for col in columns}
 
-    def select_from_table(
-        self, database: str, schema: str, table_name: str, columns: list
-    ):
+    def select_from_table(self, database: str, schema: str, table_name: str, columns: list):
         conn = snowflake.connector.connect(
             self.key_path, user=self.user, account=self.account, warehouse=self.warehouse, database=database, schema=schema
         )

@@ -2,11 +2,11 @@
 /*
 in production table name will be without [domain]_slv__
 */
-WITH source AS (
+with source as (
 
-    SELECT * FROM {{ ref('users_stg__user_cast') }}
+    select * from {{ ref('users_stg__user_cast') }}
 
 )
 
-SELECT * 
-FROM source
+select *
+from source

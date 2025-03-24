@@ -2,10 +2,10 @@
 /*
 in production table name will be without [domain]__
 */
-WITH staging AS (
+with staging as (
 
-    SELECT * FROM {{ ref('users_stg__all_users') }}
+    select * from {{ ref('users_stg__all_users') }}
 
 )
 
-SELECT * FROM staging
+select * from staging
