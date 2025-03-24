@@ -3,7 +3,7 @@ import os
 import shutil
 from abc import ABC
 from typing import Optional
-
+from cli.config import ini_config
 from cookiecutter.exceptions import OutputDirExistsException
 from cookiecutter.main import cookiecutter
 from rich.prompt import Prompt
@@ -32,7 +32,7 @@ class ModelCommands(ABC):
             logger.info("Tool type not given. Loading available tools...")
             tool_names = get_folder_names(os.path.join(get_models_dir(), "tools"))
             types = UserOptions(tool_names, sort_options=False)
-            selected_type = types.select("Please choose type number / name to use", default_selection=ModelType.GOLD.value)
+            selected_type = types.select("Please choose type number / name to use", default_selection=ModelType.GOLD.to_str())
             return selected_type
         return tool_name
 
@@ -40,18 +40,23 @@ class ModelCommands(ABC):
         if not type:
             logger.info("Model type not given. Loading available types...")
             types = UserOptions(ModelType.get_valid_types(), sort_options=False)
-            selected_type = types.select("Please choose type number / name to use", default_selection=ModelType.GOLD.value)
+            selected_type = types.select("Please choose type number / name to use", default_selection=ModelType.GOLD.to_str())
             return ModelType.from_str(selected_type)
         return ModelType.from_str(type)
 
     def get_model_type_by_dir(self, file_name_path: str) -> ModelType:
-        if "source" in file_name_path:
+        source_base_folder = ini_config.get("model", "SOURCE_FOLDER", fallback="silver/base")
+        staging_base_folder = ini_config.get("model", "STAGING_BASE_FOLDER", fallback="silver/base")
+        staging_compatible_folder = ini_config.get("model", "STAGING_COMPATIBLE_FOLDER", fallback="silver/staging")
+        gold_folder = ini_config.get("model", "MARTS_FOLDER", fallback="gold")
+        
+        if source_base_folder in file_name_path:
             return ModelType.SOURCE
-        if "silver/base" in file_name_path:
+        if staging_base_folder in file_name_path:
             return ModelType.BASE
-        if "silver/staging" in file_name_path:
+        if staging_compatible_folder in file_name_path:
             return ModelType.STAGING
-        if "gold" in file_name_path:
+        if gold_folder in file_name_path:
             return ModelType.GOLD
         raise ValueError(f"Unknown model type for file name path: {file_name_path}")
 

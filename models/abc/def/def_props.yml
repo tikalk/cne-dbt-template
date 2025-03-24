@@ -1,0 +1,21 @@
+version: 2
+
+sources:
+  - name: crm2  
+    database: "{{ env_var('SOURCE_DATABASE', env_var('BIGQUERY_DATABASE')) }}"
+    tables:
+    - name: accounts
+
+    - name: accounts_contacts
+
+    - name: accounts_cstm
+
+
+
+    - name: accounts_opportunities
+    - name: aos_contracts
+
+    - name: aos_contracts_cstm
+    - name: contacts
+
+    - name: contacts_cstm

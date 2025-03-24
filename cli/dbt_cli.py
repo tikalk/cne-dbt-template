@@ -91,45 +91,63 @@ def start():
 
 def tasks_callback(task_name: str):
     if task_name in ["dbt:run-slim", "dbt:run"]:
+        
+        if ini_config.get("dbt", "database_type", fallback="SNOWFLAKE") == "SNOWFLAKE":
+            key_path = os.environ.get("SNOWFLAKE_PRIVATE_KEY_PATH")
+            account = os.environ.get("SNOWFLAKE_ACCOUNT")
+            user = os.environ.get("SNOWFLAKE_USERNAME")
+            database = os.environ.get("SNOWFLAKE_WAREHOUSE")
+            
+        elif ini_config.get("dbt", "database_type", fallback="SNOWFLAKE") == "BIGQUERY":
+            key_path = os.environ.get("BIGQUERY_KEYFILE_PATH")
+            account = os.environ.get("SNOWFLAKE_ACCOUNT")
+            user = os.environ.get("SNOWFLAKE_USERNAME")
+            database = os.environ.get("SNOWFLAKE_WAREHOUSE")
+            
+        
         base_custom_name = ModelType.get_model_prefix(ModelType.BASE)
         staging_custom_name = ModelType.get_model_prefix(ModelType.STAGING)
 
         database = get_database()
         with open(f"{get_target_dir()}/run_results.json", "r") as fp_results, open(f"{get_target_dir()}/manifest.json", "r") as fp_manifest:
+            try:
+                run_results_dict = json.load(fp_results)
+                run_results_obj = parse_run_results_v6(run_results=run_results_dict)
+                manifest_dict = json.load(fp_manifest)
+                manifest_obj = parse_manifest_v12(manifest=manifest_dict)
 
-            run_results_dict = json.load(fp_results)
-            run_results_obj = parse_run_results_v6(run_results=run_results_dict)
-            manifest_dict = json.load(fp_manifest)
-            manifest_obj = parse_manifest_v12(manifest=manifest_dict)
+                success_results = [x for x in run_results_obj.results if x.status == Status.success]
+                total_models = len(success_results)
 
-            success_results = [x for x in run_results_obj.results if x.status == Status.success]
-            total_models = len(success_results)
+                for index, result in enumerate(success_results):
+                    unique_id = result.unique_id
+                    if unique_id.startswith("model."):
+                        node = manifest_obj.nodes[unique_id]
+                        
+                        
+                        column_definitions = database.get_table_definition(
+                            key_path,
+                            account,
+                            user,
+                            database,
+                            node.database,
+                            node.schema_,
+                            node.name.replace(f"_{staging_custom_name}", "").replace(f"_{base_custom_name}", ""),
+                        )
+                        model_commands = ModelCommands()
+                        model_type = model_commands.get_model_type_by_dir(node.path)
+                        model_access = model_commands.get_access_by_type(model_type)
 
-            for index, result in enumerate(success_results):
-                unique_id = result.unique_id
-                if unique_id.startswith("model."):
-                    node = manifest_obj.nodes[unique_id]
-                    column_definitions = database.get_table_definition(
-                        os.environ.get("SNOWFLAKE_PRIVATE_KEY_PATH"),
-                        os.environ.get("SNOWFLAKE_ACCOUNT"),
-                        os.environ.get("SNOWFLAKE_USERNAME"),
-                        os.environ.get("SNOWFLAKE_WAREHOUSE"),
-                        node.database,
-                        node.schema_,
-                        node.name.replace(f"_{staging_custom_name}", "").replace(f"_{base_custom_name}", ""),
-                    )
-                    model_commands = ModelCommands()
-                    model_type = model_commands.get_model_type_by_dir(node.path)
-                    model_access = model_commands.get_access_by_type(model_type)
-
-                    root, _ = os.path.splitext(os.path.join(get_models_dir(), node.path))
-                    yml_file = root + ".yml"
-                    node_path = node.path.split("/")[0]
-                    if node_path == "tools":
-                        node_path = node.path.split("/")[1]
-                    group = node_path
-                    logger.info(f"{index} of {total_models}: Updating model: {node.name} yaml")
-                    database.update_dbt_yaml(yml_file, node.name, column_definitions, model_access, group)
+                        root, _ = os.path.splitext(os.path.join(get_models_dir(), node.path))
+                        yml_file = root + ".yml"
+                        node_path = node.path.split("/")[0]
+                        if node_path == "tools":
+                            node_path = node.path.split("/")[1]
+                        group = node_path
+                        logger.info(f"{index} of {total_models}: Updating model: {node.name} yaml")
+                        database.update_dbt_yaml(yml_file, node.name, column_definitions, model_access, group)
+            except Exception as e:
+                logger.error(f"Error updating dbt yaml: {e}")
     elif task_name in ["dbt:set-source-production-eu", "dbt:set-source-production-us", "dbt:set-source-staging", "dbt:set-source-local"]:
         setup_repl_prompt()
         repl(AppContext().get_context(), prompt_kwargs=prompt_kwargs)

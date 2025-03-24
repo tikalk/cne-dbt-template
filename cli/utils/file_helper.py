@@ -16,7 +16,10 @@ def get_target_dir():
 
 
 def get_models_dir():
-    return os.path.join(get_root_dir(), "models")
+    models = os.path.join(get_root_dir(), "models")
+    # if not os.path.exists(models):
+    #     os.makedirs(models)
+    return models
 
 
 def get_macros_dir():

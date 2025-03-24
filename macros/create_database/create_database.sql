@@ -9,5 +9,5 @@
 
 {% macro bigquery__create_database(database_name) %}    
     {{ log("Create Database: " ~ database_name, info=True) }}
-    {% do run_query("CREATE SCHEM " ~ database_name ~ "OPTIONS (location = 'US')") %}
+    {% do run_query("CREATE SCHEMA " ~ database_name ~ "OPTIONS (location = 'US')") %}
 {% endmacro %}

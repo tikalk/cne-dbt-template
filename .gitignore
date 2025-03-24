@@ -79,3 +79,6 @@ notebooks/playground/*
 
 logs/
 .qodo
+
+#keys
+.keys/

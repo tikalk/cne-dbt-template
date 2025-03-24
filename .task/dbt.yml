@@ -2,8 +2,8 @@ version: '3'
 
 
 env:
-  DBT_PROFILE: "multi"
-  DBT_TARGET: "staging"
+  DBT_PROFILE: "tikal_dbt"
+  DBT_TARGET: "dev"
   DBT_PROJECT_DIR: "."
   DBT_STAGING_EXTENSION: "_STAGING"
   DBT_MARTS_EXTENSION: "_MARTS"
@@ -105,18 +105,18 @@ tasks:
       - task: compile
       - task: build
 
-  clean-db:
-    desc: Delete and rebuild database
-    silent: true
-    cmds:
-      - |
-        source .env
-        dbt run-operation delete_database --args  "{database_name: ${SNOWFLAKE_DATABASE} }"
-        dbt run-operation delete_database --args  "{database_name: ${SNOWFLAKE_DATABASE}{{.DBT_MARTS_EXTENSION}} }"
-        dbt run-operation delete_database --args  "{database_name: ${SNOWFLAKE_DATABASE}{{.DBT_STAGING_EXTENSION}} }"
-        dbt run-operation create_database --args  "{database_name: ${SNOWFLAKE_DATABASE}{{.DBT_MARTS_EXTENSION}} }"
-        dbt run-operation create_database --args  "{database_name: ${SNOWFLAKE_DATABASE} }"
-        dbt run-operation create_database --args  "{database_name: ${SNOWFLAKE_DATABASE}{{.DBT_STAGING_EXTENSION}} }"
+  # clean-db:
+  #   desc: Delete and rebuild database
+  #   silent: true
+  #   cmds:
+  #     - |
+  #       source .env
+  #       dbt run-operation delete_database --args  "{database_name: ${SNOWFLAKE_DATABASE} }"
+  #       dbt run-operation delete_database --args  "{database_name: ${SNOWFLAKE_DATABASE}{{.DBT_MARTS_EXTENSION}} }"
+  #       dbt run-operation delete_database --args  "{database_name: ${SNOWFLAKE_DATABASE}{{.DBT_STAGING_EXTENSION}} }"
+  #       dbt run-operation create_database --args  "{database_name: ${SNOWFLAKE_DATABASE}{{.DBT_MARTS_EXTENSION}} }"
+  #       dbt run-operation create_database --args  "{database_name: ${SNOWFLAKE_DATABASE} }"
+  #       dbt run-operation create_database --args  "{database_name: ${SNOWFLAKE_DATABASE}{{.DBT_STAGING_EXTENSION}} }"
 
   gh-login:
     desc: "Authenticate GitHub CLI"
@@ -224,10 +224,10 @@ tasks:
         vars:
           source_name: "SAAS_PROD_EU"    
 
-  set-source-local:
-    desc: Set DBT source to local schema
-    silent: true
-    cmds:
-      - task: set-source
-        vars:
-          source_name: "${SNOWFLAKE_DATABASE}"    
+  # set-source-local:
+  #   desc: Set DBT source to local schema
+  #   silent: true
+  #   cmds:
+  #     - task: set-source
+  #       vars:
+  #         source_name: "${SNOWFLAKE_DATABASE}"    
