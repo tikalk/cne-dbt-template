@@ -10,7 +10,7 @@ from cli.const.const_model import ModelType
 class DatabaseBase(ABC):
     column_order = ["name", "description", "type"]  # Adjust based on your preference
 
-    def get_table_definition(self, private_key_path, account, user, warehouse, database, schema, table_name):
+    def get_table_definition(self, private_key_path: str, account: str, user: str, warehouse: str, database: str, schema: str, table_name: str):
         pass
 
     # Function to update the DBT model's YAML file with the new columns

@@ -34,12 +34,12 @@ def organization():
         organization_table_name = "organization"
         columns_to_select = ["id", "display_name"]
         organizations_list = database.select_from_table(
-            sf_private_key_path=os.environ.get("SNOWFLAKE_PRIVATE_KEY_PATH"),
-            sf_account=os.environ.get("SNOWFLAKE_ACCOUNT"),
-            sf_user=os.environ.get("SNOWFLAKE_USERNAME"),
-            sf_warehouse=os.environ.get("SNOWFLAKE_WAREHOUSE"),
-            sf_database=os.environ.get("SOURCE_DATABASE"),
-            sf_schema="test_metadata",
+            private_key_path=os.environ.get("SNOWFLAKE_PRIVATE_KEY_PATH"),
+            account=os.environ.get("SNOWFLAKE_ACCOUNT"),
+            user=os.environ.get("SNOWFLAKE_USERNAME"),
+            warehouse=os.environ.get("SNOWFLAKE_WAREHOUSE"),
+            database=os.environ.get("SOURCE_DATABASE"),
+            schema="test_metadata",
             table_name=organization_table_name,
             columns=columns_to_select,
         )

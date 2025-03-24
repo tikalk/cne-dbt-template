@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 class BigqueryDB(DatabaseBase):
 
     # Function to connect to Snowflake and fetch the table definition
-    def get_table_definition(self, private_key_path, account, user, warehouse, database, schema, table_name):
+    def get_table_definition(self, private_key_path: str, account: str, user: str, warehouse: str, database: str, schema: str, table_name: str):
         credentials = service_account.Credentials.from_service_account_file(private_key_path)
 
         # Create BigQuery client
@@ -31,7 +31,6 @@ class BigqueryDB(DatabaseBase):
         except Exception as e:
             logger.error(f"An error occurred: {e}")
             raise e
-
 
     def select_from_table(self, private_key_path, account, user, warehouse, database, schema, table_name: str, columns: list):
 

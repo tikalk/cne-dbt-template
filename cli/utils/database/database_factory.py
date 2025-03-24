@@ -1,4 +1,3 @@
-
 from cli.config import ini_config
 from cli.utils.database.bigquery import BigqueryDB
 from cli.utils.database.database_base import DatabaseBase
