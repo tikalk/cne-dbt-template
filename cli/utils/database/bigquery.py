@@ -26,8 +26,8 @@ class BigqueryDB(DatabaseBase):
             # Get table object
             table = client.get_table(table_ref)
             # Get schema
-            schema = table.schema
-            return {field.name: field.field_type for field in schema}
+            table_schema = table.schema
+            return {field.name: field.field_type for field in table_schema}
         except Exception as e:
             logger.error(f"An error occurred: {e}")
             raise e

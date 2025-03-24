@@ -33,7 +33,9 @@ class SnowflakeDB(DatabaseBase):
         # Return the columns as a dictionary
         return {col[0]: col[1] for col in columns}
 
-    def select_from_table(self, private_key_path: str, account: str, user: str, warehouse: str, database: str, schema: str, table_name: str, columns: list):
+    def select_from_table(
+        self, private_key_path: str, account: str, user: str, warehouse: str, database: str, schema: str, table_name: str, columns: list
+    ):
         conn = snowflake.connector.connect(
             private_key_file=private_key_path, user=user, account=account, warehouse=warehouse, database=database, schema=schema
         )
