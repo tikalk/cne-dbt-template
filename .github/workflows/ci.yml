@@ -99,10 +99,9 @@ jobs:
           source .venv/bin/activate      
           dbt deps          
           dbt debug --debug
-          dbt run-operation create_database --args '{project_id: ${DBT_PROFILE_PROJECT}, dataset_name: ${DBT_SCHEMA}}'
-          dbt run-operation create_database --args "{database_name: ${DBT_PROFILE_PROJECT}.${DBT_SCHEMA}}"
-          dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}_GOLD}"
-          dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}_SILVER}"
+          # dbt run-operation create_database --args "{database_name: ${DBT_PROFILE_PROJECT}.${DBT_SCHEMA}}"
+          # dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}_GOLD}"
+          # dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}_SILVER}"
           dbt build 
           # if ${{ github.ref == 'refs/heads/main' }}; then
           #   dbt build 
