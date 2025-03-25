@@ -114,7 +114,8 @@ jobs:
         if: (github.event_name == 'push')
         env:
           DATASET_PREFIX: "CI_"
-          DBT_PROFILE_PROJECT: ${{ vars.DBT_PROFILE_PROJECT }}
+          DBT_SCHEMA: "CI_DWH"
+          DBT_PROFILE_PROJECT : ${{ secrets.DBT_PROFILE_PROJECT }}
           BIGQUERY_DATABASE: ${{ vars.BIGQUERY_DATABASE }}        
 
         run: |
