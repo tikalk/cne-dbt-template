@@ -62,19 +62,12 @@ jobs:
             uv sync
             uv pip install -e .
   
-      # - name: Write rsa_key to file
-      #   env:
-      #     SNOWFLAKE_PRIVATE_KEY_DATA: ${{ secrets.SNOWFLAKE_PRIVATE_KEY_DATA }}
-      #   run: |
-      #     echo "$SNOWFLAKE_PRIVATE_KEY_DATA" > /tmp/rsa_key.p8
-      #     echo "SNOWFLAKE_PRIVATE_KEY_PATH=/tmp/rsa_key.p8" >> $GITHUB_ENV
 
-
-      # - uses: robinraju/release-downloader@v1
-      #   with:
-      #     latest: true
-      #     out-file-path: target/last_run
-      #     fileName: '*.json'
+      - uses: robinraju/release-downloader@v1
+        with:
+          latest: true
+          out-file-path: target/last_run
+          fileName: '*.json'
 
 
       - name: Run File Validation
