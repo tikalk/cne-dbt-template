@@ -104,17 +104,18 @@ jobs:
           # dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}_GOLD}"
           # dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}_SILVER}"
           dbt build 
-          # if ${{ github.ref == 'refs/heads/main' }}; then
-          #   dbt build 
-          # else
-          #   dbt build --select "+state:modified+" --state ./target/last_run
-          # fi
+          if ${{ github.ref == 'refs/heads/main' }}; then
+            dbt build 
+          else
+            dbt build --select "+state:modified+" --state ./target/last_run
+          fi
                     
       - name: Prepare Docs Site Artifact
         if: (github.event_name == 'push')
         env:
           DATASET_PREFIX: "CI_"
           DBT_PROFILE_PROJECT: ${{ vars.DBT_PROFILE_PROJECT }}
+          BIGQUERY_DATABASE: ${{ vars.BIGQUERY_DATABASE }}        
 
         run: |
           source .venv/bin/activate          
