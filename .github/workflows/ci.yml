@@ -12,7 +12,8 @@ jobs:
   run-dbt:
     name: Build DBT Models
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write   # This gives permission to push tags
     steps:
       - name: Checkout
         uses: actions/checkout@v4
