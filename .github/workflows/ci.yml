@@ -103,11 +103,11 @@ jobs:
           dbt run-operation create_database --args "{database_name: ${DBT_PROFILE_PROJECT}.${DBT_SCHEMA}}"
           dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}_GOLD}"
           dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}_SILVER}"
-          dbt build --exclude dbt_snowflake_monitoring --exclude elementary
+          dbt build 
           # if ${{ github.ref == 'refs/heads/main' }}; then
-          #   dbt build --exclude dbt_snowflake_monitoring --exclude elementary
+          #   dbt build 
           # else
-          #   dbt build --exclude dbt_snowflake_monitoring --exclude elementary --select "+state:modified+" --state ./target/last_run
+          #   dbt build --select "+state:modified+" --state ./target/last_run
           # fi
                     
       - name: Prepare Docs Site Artifact

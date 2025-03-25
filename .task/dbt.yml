@@ -36,20 +36,20 @@ tasks:
     desc: Run dbt models
     deps: [deps]
     cmds:
-      - dbt run --exclude dbt_snowflake_monitoring --exclude elementary --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}} --fail-fast
+      - dbt run  --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}} --fail-fast
 
   changed_models:
     desc: View changed dbt models
     deps: [deps]
     cmds:
-      - dbt ls --exclude dbt_snowflake_monitoring --exclude elementary --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}}
+      - dbt ls --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}}
 
 
   run-model:
     desc: Run dbt models
     deps: [deps]
     cmds:
-      - dbt run --select {{.NAME}} --exclude dbt_snowflake_monitoring --exclude elementary --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}}
+      - dbt run --select {{.NAME}} --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}}
     vars:
       NAME: '{{.NAME | default "*"}}'
 
@@ -57,7 +57,7 @@ tasks:
     desc: Run dbt tests
     deps: [deps]
     cmds:
-      - dbt test --exclude dbt_snowflake_monitoring --exclude elementary --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}}
+      - dbt test --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}}
 
   docs:
     desc: Generate dbt documentation
@@ -70,18 +70,18 @@ tasks:
     desc: Run full dbt build (run + test)
     deps: [deps]
     cmds:
-      - dbt build  --exclude dbt_snowflake_monitoring --exclude elementary --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}}
+      - dbt build   --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}}
 
   seed:
     desc: Load seed files into the data warehouse
     deps: [deps]
     cmds:
-      - dbt seed --exclude dbt_snowflake_monitoring --exclude elementary --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}}
+      - dbt seed --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}}
 
   snapshot:
     desc: Run dbt snapshot
     cmds:
-      - dbt snapshot --exclude dbt_snowflake_monitoring --exclude elementary  --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}}
+      - dbt snapshot  --project-dir {{.DBT_PROJECT_DIR}} --profile {{.DBT_PROFILE}} --target {{.DBT_TARGET}} {{.SLIM_PARAMS}}
 
   lint:
     desc: Run SQLFluff linting

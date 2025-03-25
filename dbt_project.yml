@@ -28,7 +28,10 @@ vars:
   marts_extension: "_marts"
   staging_extension: "_staging"
   staging_fqn: "staging"
+  marts_fqn: "marts"
   staging_table_part: "_stg"
+  package_name: "tikal_dbt"
+  enable_separate_db: False
 
 models:
   dbt_bigquery_monitoring:

@@ -7,8 +7,8 @@ models:
     - job_id
     group: users
     tags:
-    - staging
     - users
+    - staging
   columns:
   - name: name
     type: STRING

@@ -7,8 +7,8 @@ models:
     - job_id
     group: users
     tags:
-    - base
     - users
+    - base
   columns:
   - name: name
     type: STRING
