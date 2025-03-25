@@ -95,6 +95,7 @@ jobs:
           DATASET_PREFIX: "CI_"
           DBT_SCHEMA: "CI_DWH"
           DBT_PROFILE_PROJECT : ${{ secrets.DBT_PROFILE_PROJECT }}
+          BIGQUERY_DATABASE: ${{ vars.BIGQUERY_DATABASE }}        
         run: |
           source .venv/bin/activate      
           dbt deps          
