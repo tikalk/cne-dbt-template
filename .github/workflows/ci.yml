@@ -181,5 +181,3 @@ jobs:
             source .venv/bin/activate          
             dbt deps
             dbt run-operation delete_database --args "{database_name: ${DBT_SCHEMA}}"
-            dbt run-operation delete_database --args "{database_name: ${DBT_SCHEMA}_GOLD}"
-            dbt run-operation delete_database --args "{database_name: ${DBT_SCHEMA}_SILVER"}
