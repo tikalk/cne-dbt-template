@@ -25,10 +25,13 @@ vars:
   scoring_job_id: bc7b0139-84df-4062-be45-9fca853a4645 #for local build
   instance_id: 46f1603d-b625-4c04-b99d-fdfc1592f196
   source_database: "SAAS_STAGING"
-  marts_extension: "_GOLD"
-  staging_extension: "_SILVER"
-  staging_fqn: "silver"
-  staging_table_part: "_slv"
+  marts_extension: "_marts"
+  staging_extension: "_staging"
+  staging_fqn: "staging"
+  marts_fqn: "marts"
+  staging_table_part: "_stg"
+  package_name: "tikal_dbt"
+  enable_separate_db: False
 
 models:
   dbt_bigquery_monitoring:

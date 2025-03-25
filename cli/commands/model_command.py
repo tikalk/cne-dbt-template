@@ -3,11 +3,12 @@ import os
 import shutil
 from abc import ABC
 from typing import Optional
-from cli.config import ini_config
+
 from cookiecutter.exceptions import OutputDirExistsException
 from cookiecutter.main import cookiecutter
 from rich.prompt import Prompt
 
+from cli.config import ini_config
 from cli.const.const_model import ModelCode, ModelType
 from cli.const.constant import Logs
 from cli.utils.file_helper import get_folder_names, get_models_dir, get_resources_dir
@@ -49,7 +50,7 @@ class ModelCommands(ABC):
         staging_base_folder = ini_config.get("model", "STAGING_BASE_FOLDER", fallback="silver/base")
         staging_compatible_folder = ini_config.get("model", "STAGING_COMPATIBLE_FOLDER", fallback="silver/staging")
         gold_folder = ini_config.get("model", "MARTS_FOLDER", fallback="gold")
-        
+
         if source_base_folder in file_name_path:
             return ModelType.SOURCE
         if staging_base_folder in file_name_path:

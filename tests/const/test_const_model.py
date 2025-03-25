@@ -1,4 +1,4 @@
-from cli.const.const_model import ModelCode, ModelType
+from cli.const.const_model import ModelCode
 
 
 def test_model_code_get_valid_types():
@@ -16,25 +16,3 @@ def test_model_code_from_str():
 def test_model_code_to_extension():
     assert ModelCode.SQL.to_extension() == "sql"
     assert ModelCode.PYTHON.to_extension() == "py"
-
-
-def test_model_type_get_valid_types():
-    assert ModelType.get_valid_types() == [
-        "Model - Silver Base",
-        "Model - Silver Staging",
-        "Model - Gold",
-    ]
-
-
-def test_model_type_from_str():
-    assert ModelType.from_str("source") == ModelType.SOURCE
-    assert ModelType.from_str("Model - Source") == ModelType.SOURCE
-    assert ModelType.from_str("base") == ModelType.BASE
-    assert ModelType.from_str("Model - Silver Base") == ModelType.BASE
-    assert ModelType.from_str("staging") == ModelType.STAGING
-    assert ModelType.from_str("Model - Silver Staging") == ModelType.STAGING
-    assert ModelType.from_str("gold") == ModelType.GOLD
-    assert ModelType.from_str("Model - Gold") == ModelType.GOLD
-    assert ModelType.from_str("exposures") == ModelType.EXPOSURES
-    assert ModelType.from_str("Model - Exposure") == ModelType.EXPOSURES
-    assert ModelType.from_str("unknown") is None

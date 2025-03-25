@@ -19,6 +19,12 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
 
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+            python-version: '3.12'
+    
       - name: Write BIGQUERY_KEYFILE_JSON to File
         env:
           BIGQUERY_KEYFILE_JSON_BASE64: ${{ secrets.BIGQUERY_KEYFILE_JSON_BASE64 }}
@@ -47,13 +53,14 @@ jobs:
 
       - name: Install the latest version of uv
         run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-          export PATH="$HOME/.local/bin:$PATH"
-          uv venv
-          uv sync
-          uv pip install -e .
-
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+            echo "$HOME/.local/bin" >> $GITHUB_PATH
+            export PATH="$HOME/.local/bin:$PATH"            
+            uv venv
+            uv pip install --upgrade setuptools
+            uv sync
+            uv pip install -e .
+  
       # - name: Write rsa_key to file
       #   env:
       #     SNOWFLAKE_PRIVATE_KEY_DATA: ${{ secrets.SNOWFLAKE_PRIVATE_KEY_DATA }}
@@ -73,6 +80,7 @@ jobs:
         env:
           DATASET_PREFIX: "CI_"
           DBT_PROFILE_PROJECT: ${{ vars.DBT_PROFILE_PROJECT }}
+          BIGQUERY_DATABASE: ${{ vars.BIGQUERY_DATABASE }}        
 
         run: |
           source .venv/bin/activate        
@@ -84,24 +92,22 @@ jobs:
       - name: Run DBT
         if: (github.event_name == 'push') || (github.event_name == 'pull_request' && (github.event.action == 'opened' || github.event.action == 'synchronize'))
         env:
-          DBT_PROFILE_PROJECT: ${{ vars.DBT_PROFILE_PROJECT }}
-
           DATASET_PREFIX: "CI_"
           DBT_SCHEMA: "CI_DWH"
           DBT_PROFILE_PROJECT : ${{ secrets.DBT_PROFILE_PROJECT }}
+          BIGQUERY_DATABASE: ${{ vars.BIGQUERY_DATABASE }}        
         run: |
           source .venv/bin/activate      
           dbt deps          
           dbt debug --debug
-          dbt run-operation create_database --args '{project_id: ${DBT_PROFILE_PROJECT}, dataset_name: ${DBT_SCHEMA}}'
-          dbt run-operation create_database --args "{database_name: ${DBT_PROFILE_PROJECT}.${DBT_SCHEMA}}"
-          dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}_GOLD}"
-          dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}_SILVER}"
-          dbt build --exclude dbt_snowflake_monitoring --exclude elementary
+          # dbt run-operation create_database --args "{database_name: ${DBT_PROFILE_PROJECT}.${DBT_SCHEMA}}"
+          # dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}_GOLD}"
+          # dbt run-operation create_database --args "{database_name: ${DBT_SCHEMA}_SILVER}"
+          dbt build 
           # if ${{ github.ref == 'refs/heads/main' }}; then
-          #   dbt build --exclude dbt_snowflake_monitoring --exclude elementary
+          #   dbt build 
           # else
-          #   dbt build --exclude dbt_snowflake_monitoring --exclude elementary --select "+state:modified+" --state ./target/last_run
+          #   dbt build --select "+state:modified+" --state ./target/last_run
           # fi
                     
       - name: Prepare Docs Site Artifact

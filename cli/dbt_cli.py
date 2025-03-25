@@ -6,7 +6,6 @@ import sys
 import traceback
 
 import ccl
-import click_completion
 import rich_click as click
 from click_repl import repl
 from dbt_artifacts_parser.parser import parse_manifest_v12, parse_run_results_v6
@@ -91,20 +90,7 @@ def start():
 
 def tasks_callback(task_name: str):
     if task_name in ["dbt:run-slim", "dbt:run"]:
-        
-        if ini_config.get("dbt", "database_type", fallback="SNOWFLAKE") == "SNOWFLAKE":
-            key_path = os.environ.get("SNOWFLAKE_PRIVATE_KEY_PATH")
-            account = os.environ.get("SNOWFLAKE_ACCOUNT")
-            user = os.environ.get("SNOWFLAKE_USERNAME")
-            database = os.environ.get("SNOWFLAKE_WAREHOUSE")
-            
-        elif ini_config.get("dbt", "database_type", fallback="SNOWFLAKE") == "BIGQUERY":
-            key_path = os.environ.get("BIGQUERY_KEYFILE_PATH")
-            account = os.environ.get("SNOWFLAKE_ACCOUNT")
-            user = os.environ.get("SNOWFLAKE_USERNAME")
-            database = os.environ.get("SNOWFLAKE_WAREHOUSE")
-            
-        
+
         base_custom_name = ModelType.get_model_prefix(ModelType.BASE)
         staging_custom_name = ModelType.get_model_prefix(ModelType.STAGING)
 
@@ -123,13 +109,8 @@ def tasks_callback(task_name: str):
                     unique_id = result.unique_id
                     if unique_id.startswith("model."):
                         node = manifest_obj.nodes[unique_id]
-                        
-                        
+
                         column_definitions = database.get_table_definition(
-                            key_path,
-                            account,
-                            user,
-                            database,
                             node.database,
                             node.schema_,
                             node.name.replace(f"_{staging_custom_name}", "").replace(f"_{base_custom_name}", ""),
@@ -160,7 +141,6 @@ def setup_commands():
 
     GoTasks().set_callback(tasks_callback)
     GoTasks().generate_go_tasks()
-    click_completion.init()
     cli.add_command(validate)
     cli.add_command(tasks)
 

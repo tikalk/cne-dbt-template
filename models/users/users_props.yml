@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: users_data
+    description: >
+          Collection data saved in json format
+    database: "{{ env_var('SOURCE_DATABASE', env_var('BIGQUERY_DATABASE')) }}"
+    schema: BRONZE  
+
+
+groups:
+  - name: users
+    owner:
+      email: users@nagomisecurity.com
+      slack: ask-engine
+      github: tikal-dbt

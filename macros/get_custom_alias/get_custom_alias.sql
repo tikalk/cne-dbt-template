@@ -1,6 +1,7 @@
 {% macro generate_alias_name(custom_alias_name=none, node=none) -%}
     {%- set staging_table_part = var('staging_table_part','_stg') -%}    
-    {%- if node["resource_type"]=="model" and node["package_name"]=="tikal_dbt" -%}
+    {%- set package_name = var('package_name','tikal_dbt') -%}    
+    {%- if node["resource_type"]=="model" and node["package_name"]==package_name -%}
         {%- if custom_alias_name is none -%}    
             {% set table_parts = node.name.split('__') %}
             {% set node_name = table_parts[1] %}

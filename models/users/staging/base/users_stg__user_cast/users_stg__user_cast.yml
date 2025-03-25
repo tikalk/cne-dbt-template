@@ -1,0 +1,20 @@
+models:
+- name: users_stg__user_cast
+  description: This table contains the user_cast details
+  config:
+    cluster_by:
+    - org_id
+    - job_id
+    group: users
+    tags:
+    - users
+    - base
+  columns:
+  - name: name
+    type: STRING
+    description: '[Add description here]'
+  - name: last
+    type: STRING
+    description: '[Add description here]'
+  tags: []
+  access: private
