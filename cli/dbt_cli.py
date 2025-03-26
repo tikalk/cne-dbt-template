@@ -52,18 +52,6 @@ def history(limit: int):
         click.echo(line)
 
 
-@cli.command(help="View catalog documentation")
-def catalog():
-    """View catalog documentation"""
-    click.launch("https://docs.getdbt.com/reference/artifacts/catalog-json")
-
-
-@cli.command(help="Learn more about dbt")
-def learn():
-    """Learn more about dbt"""
-    click.launch("https://learn.getdbt.com/catalog?labels=%5B%22dbt%20Experience%22%5D&values=%5B%22New%20to%20dbt%22%5D")
-
-
 @cli.command(help="Exit")
 def exit():
     """Exit"""
@@ -129,7 +117,14 @@ def tasks_callback(task_name: str):
                         database.update_dbt_yaml(yml_file, node.name, column_definitions, model_access, group)
             except Exception as e:
                 logger.error(f"Error updating dbt yaml: {e}")
-    elif task_name in ["dbt:set-source-production-eu", "dbt:set-source-production-us", "dbt:set-source-staging", "dbt:set-source-local","dbt:enable-slim", "dbt:disable-slim"]:
+    elif task_name in [
+        "dbt:set-source-production-eu",
+        "dbt:set-source-production-us",
+        "dbt:set-source-staging",
+        "dbt:set-source-local",
+        "dbt:enable-slim",
+        "dbt:disable-slim",
+    ]:
         setup_repl_prompt()
         repl(AppContext().get_context(), prompt_kwargs=prompt_kwargs)
 
