@@ -11,6 +11,6 @@ sources:
 groups:
   - name: users
     owner:
-      email: users@nagomisecurity.com
+      email: users@tikal.com
       slack: ask-engine
       github: tikal-dbt

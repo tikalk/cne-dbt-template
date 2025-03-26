@@ -129,7 +129,7 @@ def tasks_callback(task_name: str):
                         database.update_dbt_yaml(yml_file, node.name, column_definitions, model_access, group)
             except Exception as e:
                 logger.error(f"Error updating dbt yaml: {e}")
-    elif task_name in ["dbt:set-source-production-eu", "dbt:set-source-production-us", "dbt:set-source-staging", "dbt:set-source-local"]:
+    elif task_name in ["dbt:set-source-production-eu", "dbt:set-source-production-us", "dbt:set-source-staging", "dbt:set-source-local","dbt:enable-slim", "dbt:disable-slim"]:
         setup_repl_prompt()
         repl(AppContext().get_context(), prompt_kwargs=prompt_kwargs)
 

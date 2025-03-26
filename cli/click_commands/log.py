@@ -31,4 +31,4 @@ def open() -> None:
     """Open Log file"""
     log_file = get_root_dir() + "/logs/dbt.log"
     env = os.environ.copy()
-    subprocess.run(["open", log_file], env=env, check=True)
+    subprocess.run(["code", log_file], env=env, check=True)

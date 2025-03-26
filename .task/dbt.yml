@@ -8,7 +8,7 @@ env:
   DBT_STAGING_EXTENSION: "_STAGING"
   DBT_MARTS_EXTENSION: "_MARTS"
 vars:
-  SLIM_PARAMS: '{{ if .USE_SLIM_PARAMS }}--select "+state:modified" --state ./target/last_run{{ else }}{{ end }}'
+  SLIM_PARAMS: '{{ if eq .USE_SLIM_PARAMS "True" }}--select "+state:modified" --state ./target/last_run{{ else }}{{ end }}'
 
 tasks:
   deps:

@@ -1,9 +1,5 @@
 {% raw %}
-{{
-  config(
-    cluster_by=['org_id', 'job_id']
-  )
-}}
+
 
 WITH source AS (
 

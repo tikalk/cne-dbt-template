@@ -1,9 +1,5 @@
 {% raw %}
-{{
-  config(
-    cluster_by=['org_id', 'job_id']
-  )
-}}
+
 /*
 in production table name will be without [domain]_slv__
 */
