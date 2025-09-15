@@ -6,7 +6,7 @@ This document describes the GitHub Actions CI/CD workflow for the DBT (Data Buil
 
 ## Workflow Diagram
 
-```mermaid
+``git s`mermaid
 flowchart TD
     A[Push to main / PR opened/synchronized] --> B[Checkout Code]
     B --> C[Setup Python 3.12]
