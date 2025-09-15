@@ -74,7 +74,6 @@ tasks:
     import_command: false
     silent: false
     cmds:
-      - task: validate-env
       - |
         export PYTHONPATH=.
         python cli/dbt_cli.py start
