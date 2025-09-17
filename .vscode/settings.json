@@ -1,0 +1,23 @@
+{
+  "python.testing.pytestArgs": [
+    "tests"
+],
+"python.testing.unittestEnabled": false,
+"python.testing.pytestEnabled": true,
+
+    "jira-plugin.workingProject": "",
+    "cSpell.words": [
+        "Nagomi",
+    ],
+    "terminal.integrated.profiles.linux": {
+      "zsh": {
+        "path": "/usr/bin/zsh",
+        "args": [
+          "-c",
+          "source .venv/bin/activate; zsh"
+        ]
+      }
+    },
+    "terminal.integrated.defaultProfile.linux": "zsh",
+
+}
