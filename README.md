@@ -1,197 +1,303 @@
-# DBT Project
+# 🚀 Tikal CNE DBT Enterprise Template
 
-This DBT project is designed to be used in conjunction with Dagster as an orchestrator. Conceptually, DBT models map to Dagster Assets.
+[![DBT Version](https://img.shields.io/badge/dbt-1.9.3-FF694B?logo=dbt&logoColor=white)](https://docs.getdbt.com/)
+[![Python](https://img.shields.io/badge/Python-3.12+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![BigQuery](https://img.shields.io/badge/BigQuery-4285F4?logo=google-cloud&logoColor=white)](https://cloud.google.com/bigquery)
+[![Snowflake](https://img.shields.io/badge/Snowflake-29B5E8?logo=snowflake&logoColor=white)](https://www.snowflake.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+> **Enterprise-grade DBT template with advanced CLI tooling, automated workflows, and production-ready data pipelines**
 
-### Setup Local Development
+An opinionated, battle-tested DBT project template designed for enterprise data teams. Features intelligent CLI automation, comprehensive validation, and seamless integration with modern data orchestration platforms like Dagster.
 
-Before using this setup, ensure you have the following installed:
+## ✨ Key Features
 
-- [Go-task](https://taskfile.dev/installation/)
+- 🎯 **Smart CLI Interface** - Interactive command-line tools for rapid development
+- 🏗️ **Enterprise Architecture** - Staging → Marts data modeling patterns  
+- 🔄 **Dagster Integration** - Native support for asset-based orchestration
+- 🛡️ **Advanced Validation** - SQL linting, model validation, and data quality checks
+- 🚀 **CI/CD Ready** - Production-grade GitHub Actions workflows
+- 📊 **Multi-Warehouse Support** - BigQuery, Snowflake, and more
+- 🔍 **Data Observability** - Built-in monitoring with Elementary Data
+- 📝 **Auto-Documentation** - Self-documenting models and lineage
 
+## 🎬 Quick Demo
 
-To create the local environment, the developer can either use:
+```bash
+# Set up your environment in seconds
+task setup-env
 
-1. `task setup-env` (this will install the following: )        
-    * [gh](https://cli.github.com)
-    * [uv](https://astral.sh)
-    * [pre-commit](https://pre-commit.com/)
-2. Use dev container
+# Launch the interactive CLI
+task cli
 
-To test your setup run:
+# Create a new data domain with models
+create domain security_tools --sub-domain crowdstrike
+create model --domain security_tools --type staging --name endpoint_data
 
-`task test-setup`
-
-This command will also check to see if the environment parameters are set
-
-This will do dbt debug and also login to github cli
-
-If you have already done this in the past, to re-activate your environment run:
+# Run your pipeline
+task dbt:build
 ```
-source ./.venv/bin/activate  
+
+## 🏛️ Architecture Overview
+
+```
+📁 models/
+├── 🔧 staging/          # Clean, standardized source data
+│   ├── integration_tools/
+│   │   ├── okta/        # Identity & access management
+│   │   ├── crowdstrike/  # Endpoint security
+│   │   └── active_directory/
+│   └── infra/           # Pipeline metadata & metrics
+└── 🏪 marts/            # Business-ready analytics tables
+    ├── security/        # Security analytics
+    ├── compliance/      # Compliance reporting
+    └── operations/      # Operational insights
 ```
 
-## Test setup
-Copy .env_example to .env and update the values
+## 🚀 Quick Start
 
-Once you have finished `task test-setup` successfully run the following command
+### Prerequisites
 
-`task cli`
+- [Go-task](https://taskfile.dev/installation/) - Task runner
+- Python 3.12+
+- Access to BigQuery or Snowflake
 
-This should run the cli.
+### 1. Environment Setup
 
-Now run:
+```bash
+# Automated setup (installs gh, uv, pre-commit)
+task setup-env
 
-`tasks dbt:debug`
+# Or use dev container for containerized development
+# (see .devcontainer configuration)
+```
 
-This will validate the dbt connection to wharehouse.
+### 2. Configuration
 
+```bash
+# Copy and configure environment
+cp .env_example .env
+# Edit .env with your warehouse credentials
 
-## Basic Usage
-* Run --help to see all methods.
-* Using the tab will enable autocomplete
-* If you have parameters for the methods you can enter them inline, or enter and you will be prompted
+# Test your setup
+task test-setup
+```
 
+### 3. Launch CLI
 
-## Project documentation
+```bash
+# Start interactive CLI with autocomplete
+task cli
 
-If you are read to jump in read the following documentation:
+# Verify warehouse connection
+task dbt:debug
+```
 
-* [Overview](docs/overview/11_2_2025_architecture.md)
-* [DBT Task Commands](docs/overview/19_2_2025_task_dbt.md)
-* [Main Workflows](docs/overview/19_2_2025_workflow.md)
-* [CI Overview](docs/overview/19_2_2025_CI.md)
+## 🎛️ CLI Commands
 
+Our intelligent CLI provides guided workflows for common tasks:
 
-## Getting started
+### 📊 **Data Modeling**
+```bash
+create domain <domain_name>              # Create new data domain
+create model --domain <name> --type <staging|marts>  # Generate models
+create integration-tool <tool_name>      # Add new data source
+create macro --name <macro_name>         # Reusable SQL components
+```
 
-Prior to writing models, it's important to understand some of the concepts. Recommended reading:
+### 🔍 **Development & Testing**
+```bash
+task dbt:run --select <model>           # Run specific models
+task dbt:test                           # Execute data tests
+task dbt:build                          # Full build pipeline
+task dbt:docs                           # Generate documentation
+```
 
-- [DBT and Dagster](https://docs.dagster.io/integrations/dbt)
-- [What is DBT](https://www.getdbt.com/product/what-is-dbt)
+### 🛠️ **Quality & Validation**
+```bash
+validate all                            # Run all validations
+task dbt:lint                          # SQL formatting
+task dbt:format                        # Auto-fix formatting
+```
 
-There are a couple of useful plugins when writing models:
+### 📈 **Monitoring & Observability**
+```bash
+task dbt:edr-report                     # Elementary data report
+learn catalog                          # Explore data catalog
+select organization                     # Switch contexts
+```
 
-- [VS Code](https://marketplace.visualstudio.com/items?itemName=innoverio.vscode-dbt-power-user)
-- [IntelliJ](https://plugins.jetbrains.com/plugin/23789-dbt)
+## 🏗️ Project Structure
 
-You might run into autoformatting issues when writing SQL models. Please check that your editor recognizes the file as "Jinja SQL templates" rather than raw SQL.
+### 📂 **Models Organization**
+```
+models/
+├── staging/                    # 🧹 Data cleaning & standardization
+│   ├── _sources.yml           # Source definitions
+│   └── stg_<source>_<entity>.sql
+├── marts/                      # 🎯 Business logic & analytics
+│   ├── core/                  # Core business entities
+│   ├── finance/               # Financial analytics
+│   └── security/              # Security metrics
+└── intermediate/              # 🔄 Reusable transformations
+```
 
-## Project structure
+### 🔧 **Macros & Utilities**
+```
+macros/
+├── create_database/           # Database management
+├── generate_schema_name/      # Dynamic schema naming
+├── get_custom_alias/          # Table aliasing
+└── normalization/             # Data standardization
+```
 
-The project structure follows dbt recommendations.
+### 🧪 **Testing & Validation**
+- **Generic Tests**: Uniqueness, not-null, referential integrity
+- **Singular Tests**: Custom business logic validation
+- **Data Quality**: Elementary data monitoring
+- **SQL Linting**: SQLFluff integration
 
-- [Staging views](https://docs.getdbt.com/best-practices/how-we-structure/4-marts)
-- [Marts - Business Defined Entities](https://docs.getdbt.com/best-practices/how-we-structure/4-marts)
+## 🔄 CI/CD Pipeline
 
-## Debugging issues
+Our GitHub Actions workflow provides:
 
-Often any issues presented will be visible via the UI in Dagster in logs. However, if you require a bit more in-depth debugging, you can perform the following steps:
+- 🔍 **Slim CI** - Only test changed models
+- 🧪 **Automated Testing** - Data quality validation
+- 📊 **Documentation** - Auto-generated data catalog
+- 🚀 **Deployment** - Multi-environment support
+- 📈 **Monitoring** - Performance tracking
 
-- Run `dbt build --debug` to output more verbose logs from this folder
-- Check out the compiled models in the `target/compiled/dbt_project_models` folder and try to run the compiled steps in warehouse.
+### Pipeline Stages
+1. **Validation** → SQL linting, model validation
+2. **Testing** → Unit tests, data quality checks  
+3. **Build** → Compile and run models
+4. **Deploy** → Environment-specific deployment
+5. **Monitor** → Data freshness and quality alerts
 
+## 🛡️ Data Quality & Governance
 
-## Components
-
-### DBT Models
-
-DBT models are SQL files that define transformations on your data. These models are organized into different layers:
-
-- **Staging**: Raw data is cleaned and transformed into a more usable format.
-- **Marts**: Business-defined entities that are used for reporting and analysis.
-
-#### Folder Structure
-    Area:
-        data collection, integrations, infra, ....)
-    Realm (sub area - can be nested directories):
-        integration_tools:
-            okkta 
-                anonymization (staging)
-                scoring (marts)
-            active directory
-                anonymization (staging)
-                scoring (marts)
-            crowd strike
-                anonymization (staging)
-                scoring (marts)
-        infra:
-            pipeline_metadata
-            metrics
-        
-        
-
-### Macros
-
-Macros are reusable SQL snippets that can be used across multiple models. They help to avoid repetition and make your SQL code more maintainable.
-
-#### Infra macros   
-    * create_database - create your warehouse db if not exists
-    * delete_database - delete your warehouse db if exists (allows you to reset your db)
-    * [generate_schema_name](https://docs.getdbt.com/docs/build/custom-schemas) - allow you do definee location of tables in schema by code
-    * [get_custom_alias](https://docs.getdbt.com/docs/build/custom-aliases) - allow you do define name of table in schema by code
-
-### Seeds
-
-Seeds are CSV files that are loaded into your data warehouse as tables. They are useful for static data that doesn't change often.
-
-### Snapshots
-
-Snapshots are used to capture the state of your data at a specific point in time. They are useful for tracking changes to your data over time.
-
-### Tests
-
-Tests are used to validate the quality of your data. They can be used to check for things like null values, unique constraints, and referential integrity.
-
-### Documentation
-
-Documentation is used to describe your models, macros, seeds, and snapshots. It helps to provide context and understanding for your data transformations.
-
+### Built-in Validations
+- **Schema Enforcement** - Automatic schema validation
+- **Data Freshness** - Source data recency checks
+- **Referential Integrity** - Cross-table relationship validation
+- **Custom Business Rules** - Domain-specific data quality tests
 
 ### Pre-commit Hooks
+- 🔒 Security scanning (detect private keys)
+- 📝 SQL formatting (SQLFluff)
+- 🐍 Python code quality (black, isort, mypy)
+- 🧪 DBT validations (parsing, testing)
 
-Pre-commit hooks are used to enforce code quality standards. They can be used to run linters, formatters, and other checks before code is committed.
+## 🔧 Configuration
 
-The pre commit hooks that we use are:
+### Environment Variables
+```bash
+# Warehouse Configuration
+SNOWFLAKE_ACCOUNT=your-account
+SNOWFLAKE_USER=your-username
+SNOWFLAKE_PASSWORD=your-password
+SNOWFLAKE_DATABASE=your-database
 
-On commit:
-    security hooks (detect-private-key, no-commit-to-branch)
-    bad file hooks (check-merge-conflict, check-toml, check-added-large-files)
-    sql related hooks (sqlfluff)
-    python related hooks for python models (isort, black flake8, flake8, mypy)
-    dbt checks (check-script-semicolon)
+# BigQuery Configuration  
+GOOGLE_APPLICATION_CREDENTIALS=path/to/credentials.json
+BQ_PROJECT=your-project-id
+BQ_DATASET=your-dataset
 
-On Push (since these checkes take time, they are moved to pre push):
-    dbt checks (check-script-has-no-table-name, check-macro-arguments-have-desc, check-macro-arguments-have-desc,   check-script-has-no-table-name, dbt-parse, dbt-test)
+# Pipeline Configuration
+ORG_ID=your-organization-id
+DBT_TARGET=dev  # dev, staging, prod
+```
 
+### Profiles Configuration
+The project supports multiple target environments with automatic schema and database naming conventions.
 
+## 📚 Documentation & Learning
 
-### CI/CD
+### 📖 **Getting Started Guides**
+- [Architecture Overview](docs/overview/11_2_2025_architecture.md)
+- [DBT Task Commands](docs/overview/19_2_2025_task_dbt.md)  
+- [Main Workflows](docs/overview/19_2_2025_workflow.md)
+- [CI/CD Overview](docs/overview/19_2_2025_CI.md)
 
-Continuous Integration and Continuous Deployment (CI/CD) pipelines are used to automate the testing and deployment of your DBT models. They help to ensure that your data transformations are always in a deployable state.
+### 🎓 **Recommended Reading**
+- [DBT Best Practices](https://docs.getdbt.com/best-practices)
+- [DBT and Dagster Integration](https://docs.dagster.io/integrations/dbt)
+- [Modern Data Stack Architecture](https://www.getdbt.com/product/what-is-dbt)
 
+### 🔌 **IDE Extensions**
+- [VS Code DBT Power User](https://marketplace.visualstudio.com/items?itemName=innoverio.vscode-dbt-power-user)
+- [IntelliJ DBT Plugin](https://plugins.jetbrains.com/plugin/23789-dbt)
 
-### Validation / PreCommit
+## 🚨 Troubleshooting
 
-In order to get better code, we have added the following validations:
+### Common Issues
 
-1. SQL formatting using [sqlfluff](https://sqlfluff.com/)
-2. Python formatting for DBT Python modules
-3. [dbt-checkpoint](https://github.com/dbt-checkpoint/dbt-checkpoint)
+**Connection Problems**
+```bash
+task dbt:debug  # Validate warehouse connection
+```
 
+**Model Compilation Errors**
+```bash
+dbt build --debug  # Verbose logging
+# Check compiled SQL in target/compiled/
+```
 
+**Performance Issues**
+```bash
+task dbt:run --select "+state:modified"  # Slim runs
+```
 
-19_2_2025_workflow.md
+### Debug Mode
+Enable detailed logging for troubleshooting:
+```bash
+export DBT_LOG_LEVEL=debug
+task dbt:run --debug
+```
 
-### Resources
+## 🤝 Contributing
 
-- [Slim CI with DBT Core and Snowpark](https://medium.com/@thiernomadiariou/slim-ci-with-dbt-core-and-snowpark-ffbb80b81fec)
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
-## Contributing
+### Development Workflow
+1. Fork and clone the repository
+2. Create a feature branch
+3. Make your changes with tests
+4. Run validation: `task validate`
+5. Submit a pull request
 
-Please read the [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
+## 📊 Monitoring & Observability
 
-## License.
+### Elementary Data Integration
+- **Data Quality Monitoring** - Automated anomaly detection
+- **Lineage Tracking** - Visual data flow representation  
+- **Performance Metrics** - Query performance insights
+- **Alerting** - Slack/email notifications for issues
 
+### Usage Analytics
+Track model usage, performance, and data freshness with built-in monitoring dashboards.
+
+## 🏢 Enterprise Features
+
+- **Multi-tenant Architecture** - Organization and instance isolation
+- **Role-based Access Control** - Fine-grained permissions
+- **Audit Logging** - Complete change tracking
+- **Disaster Recovery** - Backup and restore procedures
+- **Compliance Ready** - SOX, GDPR, HIPAA support
+
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## 🙏 Acknowledgments
+
+Built with ❤️ by the Tikal CNE team using:
+- [DBT](https://www.getdbt.com/) - Data transformation framework
+- [Dagster](https://dagster.io/) - Data orchestration platform  
+- [Elementary](https://www.elementary-data.com/) - Data observability
+- [Go-task](https://taskfile.dev/) - Task automation
+- [SQLFluff](https://sqlfluff.com/) - SQL linting
+
+---
+
+**Ready to transform your data pipeline?** 🚀 [Get started](#-quick-start) or [explore the docs](#-documentation--learning)!
