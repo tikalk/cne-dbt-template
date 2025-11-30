@@ -4,7 +4,7 @@ tikal_dbt:
     dev:
       type: bigquery
       method: service-account
-      keyfile: "{{ env_var('BIGQUERY_KEYFILE_PATH', '.keys/staging.json') }}"
+      keyfile: "{{ env_var('BIGQUERY_KEYFILE_PATH', '.keys/cne.json') }}"
       project: "{{ env_var('DBT_PROFILE_PROJECT') }}"
       dataset: "{{ env_var('DATASET_PREFIX') }}_DWH"
       threads: 4 # Must be a value of 1 or greater            

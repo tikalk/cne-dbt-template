@@ -18,6 +18,14 @@ class BigqueryDB(DatabaseBase):
         self.account: str = os.environ.get("DBT_PROFILE_PROJECT", "")
         self.user: str = os.environ.get("BIGQUERY_USERNAME", "")
         self.database: str = os.environ.get("BIGQUERY_DATABASE", "")
+        if not self.key_path:
+            raise ValueError("BIGQUERY_KEYFILE_PATH is not set")
+        if not self.account:
+            raise ValueError("DBT_PROFILE_PROJECT is not set")
+        if not self.user:
+            raise ValueError("BIGQUERY_USERNAME is not set")
+        if not self.database:
+            raise ValueError("BIGQUERY_DATABASE is not set")
 
     # Function to connect to Snowflake and fetch the table definition
     def get_table_definition(self, database: str | None, schema: str | None, table_name: str | None):
