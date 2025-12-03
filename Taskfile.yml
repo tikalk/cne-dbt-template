@@ -52,7 +52,6 @@ tasks:
       - zsh -c "source ./.venv/bin/activate && pre-commit autoupdate"
       - task: dbt:get-latest-manifest
       - "echo Checking Environment Variables"
-      - task: view-env
   
   test-setup:
     desc: Setup the environment for testing
